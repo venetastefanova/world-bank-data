@@ -1,0 +1,2 @@
+export const FETCH_CURRENT_DATA = 'FETCH_CURRENT_DATA';
+export const FETCH_DATA_FAIL = 'FETCH_DATA_FAIL';
