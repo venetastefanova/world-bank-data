@@ -20,7 +20,7 @@ export const getCountry = (country) => {
     // coming from redux thunk
     axios.get(`https://api.worldbank.org/v2/country/${country}/indicator/SP.POP.TOTL?format=json&date=2010`)
       .then(response => {
-        dispatch(fetchDataSuccess(response.data[1]));
+        // dispatch(fetchDataSuccess(response.data[1]));
       })
       .catch(error => {
         dispatch(fetchDataFail());
@@ -40,13 +40,16 @@ export const getAllCountries = ()=>{
         // coming from redux thunk
         axios.get("https://api.worldbank.org/v2/country?format=json&per_page=10000")
           .then(response => {
-            //   var dataResponse = response.data[1];
-            //     let allCountries =[];
-            //   dataResponse.forEach(item=>{
-            //       console.log(item.id)
-            //   })
-              console.log(response.data[1])
-            // dispatch(fetchDataSuccess(response.data[1]));
+               const allCountries =[];
+              response.data[1].forEach(res=>{
+                allCountries.push({
+                    name:res.name,
+                    id:res.id,
+                    code:res.iso2Code
+                })               
+              })
+            console.log( allCountries)
+            dispatch(fetchAllCountries(allCountries));
           })
           .catch(error => {
             dispatch(fetchDataFail());
