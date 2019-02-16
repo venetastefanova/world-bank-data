@@ -15,11 +15,16 @@ export const fetchDataFail = () => {
 };
 
 
-export const getCountry = (country) => {
+export const getCountry = (country,year) => {
   return dispatch => {
     // coming from redux thunk
-    axios.get(`https://api.worldbank.org/v2/country/${country}/indicator/SP.POP.TOTL?format=json&date=2010`)
+    axios.get(`https://api.worldbank.org/v2/country/${country}/indicator/SP.POP.TOTL?format=json&date=${year}`)
       .then(response => {
+
+          console.log("yes woho")
+          console.log(country)
+          console.log(year)
+          console.log(response.data[1]);
         // dispatch(fetchDataSuccess(response.data[1]));
       })
       .catch(error => {

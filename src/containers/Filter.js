@@ -6,7 +6,9 @@ import Autosuggest from "react-autosuggest";
 class Filter extends Component {
   state = {
     value: "",
-    suggestions: []
+    suggestions: [],
+    countryCode:"",
+    year: ""
   };
 
   //gets the input and trims it
@@ -64,8 +66,20 @@ class Filter extends Component {
   getCountryCode = ()=> {
     const code = this.props.allCountries.find(country=>country.name===this.state.value)
     console.log(code)
-  }
+    this.setState({
+        country: code.id
+      });
 
+    this.props.onGetCountryCode(code.id, this.state.year)
+    
+  }
+    getValue=(e)=>{
+        this.setState({
+           year: e.target.value
+          });
+        console.log(e.target.value);
+
+    }
   render() {
     const { value, suggestions } = this.state;
     // Autosuggest will pass through all these props to the input.
@@ -85,6 +99,13 @@ class Filter extends Component {
           renderSuggestion={this.renderSuggestion}
           inputProps={inputProps}
         />
+
+            <select onChange={this.getValue}>
+            <option value="2009">2009</option>
+            <option value="2010">2010</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            </select>
         <button type="button" onClick={this.getCountryCode}>Search</button>
       </div>
     );
@@ -100,7 +121,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetCountry: country => dispatch(actions.getCountry(country)),
+    onGetCountryCode: (country,year) => dispatch(actions.getCountry(country,year)),
     onGetAllCountries: () => dispatch(actions.getAllCountries())
   };
 };
