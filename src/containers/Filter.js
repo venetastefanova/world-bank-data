@@ -7,7 +7,7 @@ class Filter extends Component {
         country: ""
     }
   componentDidMount() {
-    this.props.onInitData();
+    this.props.onGetAllCountries();
   }
 
   inputOnChange = (e) => {
@@ -23,7 +23,7 @@ class Filter extends Component {
     // });
     return <div>
         <input onChange={this.inputOnChange}type="text" placeholder="country"/>
-        <button onClick={this.getCountryInput} type="button">Search</button>
+        <button onClick={()=>this.props.onGetCountry(this.state.country)} type="button">Search</button>
     </div>;
   }
 }
@@ -36,7 +36,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onInitData: () => dispatch(actions.initData())
+    onGetCountry: (country) => dispatch(actions.getCountry(country)),
+    onGetAllCountries: () => dispatch(actions.getAllCountries())
   };
 };
 

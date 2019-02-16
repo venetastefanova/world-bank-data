@@ -14,10 +14,11 @@ export const fetchDataFail = () => {
   };
 };
 
-export const initData = () => {
+
+export const getCountry = (country) => {
   return dispatch => {
     // coming from redux thunk
-    axios.get("https://api.worldbank.org/v2/country/BG/indicator/SP.POP.TOTL?format=json&date=2010")
+    axios.get(`https://api.worldbank.org/v2/country/${country}/indicator/SP.POP.TOTL?format=json&date=2010`)
       .then(response => {
         dispatch(fetchDataSuccess(response.data[1]));
       })
@@ -26,3 +27,29 @@ export const initData = () => {
       });
   };
 };
+
+// initial load
+export const fetchAllCountries = (allCountries) =>{
+    return {
+        type: actionTypes.FETCH_ALL_COUNTRIES,
+        allCountries:allCountries
+      };
+}
+export const getAllCountries = ()=>{
+    return dispatch => {
+        // coming from redux thunk
+        axios.get("https://api.worldbank.org/v2/country?format=json&per_page=10000")
+          .then(response => {
+            //   var dataResponse = response.data[1];
+            //     let allCountries =[];
+            //   dataResponse.forEach(item=>{
+            //       console.log(item.id)
+            //   })
+              console.log(response.data[1])
+            // dispatch(fetchDataSuccess(response.data[1]));
+          })
+          .catch(error => {
+            dispatch(fetchDataFail());
+          });
+      };
+}
