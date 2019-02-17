@@ -25,7 +25,7 @@ export const getCountry = (country,year) => {
           console.log(country)
           console.log(year)
           console.log(response.data[1]);
-        // dispatch(fetchDataSuccess(response.data[1]));
+         dispatch(fetchDataSuccess(response.data[1]));
       })
       .catch(error => {
         dispatch(fetchDataFail());

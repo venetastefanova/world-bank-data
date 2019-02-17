@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import * as actions from "../store/actions/actions";
 import { connect } from "react-redux";
 import Autosuggest from "react-autosuggest";
+import Result from '../components/Result'
 
 class Filter extends Component {
   state = {
     value: "",
     suggestions: [],
-    countryCode:"",
+    countryCode: "",
     year: ""
   };
 
@@ -28,16 +29,14 @@ class Filter extends Component {
   };
 
   //populates the input based on the selected item
-  getSuggestionValue = suggestion =>{
-
+  getSuggestionValue = suggestion => {
     return suggestion.name;
-  }
+  };
 
   // render suggestions
   renderSuggestion = suggestion => <div>{suggestion.name}</div>;
 
   onChange = (event, { newValue }) => {
-
     this.setState({
       value: newValue
     });
@@ -46,7 +45,6 @@ class Filter extends Component {
   // Autosuggest will call this function every time you need to update suggestions.
   // You already implemented this logic above, so just use it.
   onSuggestionsFetchRequested = ({ value }) => {
-
     this.setState({
       suggestions: this.getSuggestions(value)
     });
@@ -61,34 +59,39 @@ class Filter extends Component {
 
   componentDidMount() {
     this.props.onGetAllCountries();
+    console.log("heeeeei")
   }
 
-  getCountryCode = ()=> {
-    const code = this.props.allCountries.find(country=>country.name===this.state.value)
-    console.log(code)
+  getCountryCode = () => {
+    const code = this.props.allCountries.find(
+      country => country.name === this.state.value
+    );
+    console.log(code);
     this.setState({
-        country: code.id
-      });
+      country: code.id
+    });
 
-    this.props.onGetCountryCode(code.id, this.state.year)
-    
-  }
-    getValue=(e)=>{
-        this.setState({
-           year: e.target.value
-          });
-        console.log(e.target.value);
+    this.props.onGetCountryCode(code.id, this.state.year);
+  };
+  getValue = e => {
+    this.setState({
+      year: e.target.value
+    });
+    console.log(e.target.value);
+  };
 
-    }
+
   render() {
     const { value, suggestions } = this.state;
     // Autosuggest will pass through all these props to the input.
 
     const inputProps = {
-    placeholder: "Country",
+      placeholder: "Country",
       value,
       onChange: this.onChange
     };
+
+   
     return (
       <div>
         <Autosuggest
@@ -100,14 +103,23 @@ class Filter extends Component {
           inputProps={inputProps}
         />
 
-            <select onChange={this.getValue}>
-            <option value="2009">2009</option>
-            <option value="2010">2010</option>
-            <option value="2011">2011</option>
-            <option value="2012">2012</option>
-            </select>
-        <button type="button" onClick={this.getCountryCode}>Search</button>
-      </div>
+        <select onChange={this.getValue}>
+          <option value="2009">2009</option>
+          <option value="2010">2010</option>
+          <option value="2011">2011</option>
+          <option value="2012">2012</option>
+        </select>
+        <button type="button" onClick={this.getCountryCode}>
+          Search
+        </button>
+        
+        <div>
+          <Result data={this.props.currentData}/>
+        </div>
+
+
+        </div>
+     
     );
   }
 }
@@ -121,7 +133,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetCountryCode: (country,year) => dispatch(actions.getCountry(country,year)),
+    onGetCountryCode: (country, year) =>dispatch(actions.getCountry(country, year)),
     onGetAllCountries: () => dispatch(actions.getAllCountries())
   };
 };

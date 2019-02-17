@@ -2,7 +2,7 @@ import * as actionTypes from './actions/actionTypes';
 
 const initialState = {
   allCountries:[],
-  currentData: []
+  currentData:  null
 }
 
 const reducer = (state = initialState, action)=>{
