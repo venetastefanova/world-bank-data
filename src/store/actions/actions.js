@@ -1,10 +1,17 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
 
-export const fetchDataSuccess = currentPopulationData => {
+export const fetchCurrentPopulationData = currentPopulationData => {
   return {
     type: actionTypes.FETCH_CURRENT_POPULATION_DATA,
     currentPopulationData: currentPopulationData
+  };
+};
+
+export const fetchCurrentEmissionsData = currentEmissionsData => {
+  return {
+    type: actionTypes.FETCH_CURRENT_EMISSIONS_DATA,
+    currentEmissionsData:currentEmissionsData
   };
 };
 
@@ -25,7 +32,18 @@ export const getCountry = (country,year) => {
           console.log(country)
           console.log(year)
           console.log(response.data[1]);
-         dispatch(fetchDataSuccess(response.data[1]));
+         dispatch(fetchCurrentPopulationData(response.data[1]));
+      })
+      .catch(error => {
+        dispatch(fetchDataFail());
+      });
+    axios.get(`https://api.worldbank.org/v2/country/${country}/indicator/EN.ATM.CO2E.KT?format=json&date=${year}`)
+      .then(response => {
+          console.log("yes woho2")
+          console.log(country)
+          console.log(year)
+          console.log(response.data[1]);
+          dispatch(fetchCurrentEmissionsData(response.data[1]));
       })
       .catch(error => {
         dispatch(fetchDataFail());

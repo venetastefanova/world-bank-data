@@ -3,11 +3,16 @@ import React, { Component } from "react";
 export default class Result extends Component {
   render() {
     return <div>
-       {this.props.data !== null 
-            ? <p>Population: {this.props.data[0].value !== null 
-                                ? this.props.data[0].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 
+       {this.props.populationData !== null && this.props.emissionsData
+            ?  <p>Population: {this.props.populationData[0].value !== null 
+                                ? this.props.populationData[0].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 
                                 : "sorry, we do not have this information"}</p>
-            : null}     
+            : null}   
+        {this.props.emissionsData !== null && this.props.populationData !== null 
+            ? <p>Carbon dioxite emissions: {this.props.emissionsData[0].value !== null 
+                                ? this.props.emissionsData[0].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 
+                                : "sorry, we do not have this information"}</p>
+            : null}       
         </div>;
   }
 }

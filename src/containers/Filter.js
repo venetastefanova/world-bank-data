@@ -94,7 +94,6 @@ class Filter extends Component {
     const year = this.props.years.map((year, index) => {
       return (
         <option key={index} value={year}>
-          {" "}
           {year}
         </option>
       );
@@ -111,13 +110,15 @@ class Filter extends Component {
           inputProps={inputProps}
         />
 
-        <select onChange={this.getValue}>{year}</select>
+        <select onChange={this.getValue}>
+        
+        {year}</select>
         <button type="button" onClick={this.getCountryCode}>
           Search
         </button>
 
         <div>
-          <Result data={this.props.currentPopulationData} />
+          <Result countryName={this.state.value} populationData={this.props.currentPopulationData} emissionsData={this.props.currentEmissionsData}/>
         </div>
       </div>
     );
@@ -127,6 +128,7 @@ class Filter extends Component {
 const mapStateToProps = state => {
   return {
     currentPopulationData: state.currentPopulationData,
+    currentEmissionsData:state.currentEmissionsData,
     allCountries: state.allCountries,
     years: state.years
   };
