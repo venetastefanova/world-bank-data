@@ -2,7 +2,8 @@ import * as actionTypes from './actions/actionTypes';
 
 const initialState = {
   allCountries:[],
-  currentData:  null
+  currentPopulationData:  null,
+  years:[]
 }
 
 const reducer = (state = initialState, action)=>{
@@ -13,13 +14,18 @@ const reducer = (state = initialState, action)=>{
           ...state,
           allCountries:action.allCountries
         }
-      case actionTypes.FETCH_CURRENT_DATA:
+      case actionTypes.FETCH_CURRENT_POPULATION_DATA:
         //  console.log(action.currentData)
           return{
             ...state,
-            currentData:action.currentData
+            currentPopulationData:action.currentPopulationData
           }
-
+      case actionTypes.FETCH_ALL_YEARS:
+      console.log(action.years)
+          return{
+            ...state,
+            years: action.years
+          }
       default:
         return state;
     }

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import * as actions from "../store/actions/actions";
 import { connect } from "react-redux";
 import Autosuggest from "react-autosuggest";
-import Result from '../components/Result'
+import Result from "../components/Result";
 
 class Filter extends Component {
   state = {
@@ -59,7 +59,8 @@ class Filter extends Component {
 
   componentDidMount() {
     this.props.onGetAllCountries();
-    console.log("heeeeei")
+    this.props.onGetAllYears();
+    console.log("heeeeei");
   }
 
   getCountryCode = () => {
@@ -80,7 +81,6 @@ class Filter extends Component {
     console.log(e.target.value);
   };
 
-
   render() {
     const { value, suggestions } = this.state;
     // Autosuggest will pass through all these props to the input.
@@ -91,7 +91,15 @@ class Filter extends Component {
       onChange: this.onChange
     };
 
-   
+    const year = this.props.years.map((year, index) => {
+      return (
+        <option key={index} value={year}>
+          {" "}
+          {year}
+        </option>
+      );
+    });
+
     return (
       <div>
         <Autosuggest
@@ -103,38 +111,33 @@ class Filter extends Component {
           inputProps={inputProps}
         />
 
-        <select onChange={this.getValue}>
-          <option value="2009">2009</option>
-          <option value="2010">2010</option>
-          <option value="2011">2011</option>
-          <option value="2012">2012</option>
-        </select>
+        <select onChange={this.getValue}>{year}</select>
         <button type="button" onClick={this.getCountryCode}>
           Search
         </button>
-        
+
         <div>
-          <Result data={this.props.currentData}/>
+          <Result data={this.props.currentPopulationData} />
         </div>
-
-
-        </div>
-     
+      </div>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    currentData: state.currentData,
-    allCountries: state.allCountries
+    currentPopulationData: state.currentPopulationData,
+    allCountries: state.allCountries,
+    years: state.years
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetCountryCode: (country, year) =>dispatch(actions.getCountry(country, year)),
-    onGetAllCountries: () => dispatch(actions.getAllCountries())
+    onGetCountryCode: (country, year) =>
+      dispatch(actions.getCountry(country, year)),
+    onGetAllCountries: () => dispatch(actions.getAllCountries()),
+    onGetAllYears: () => dispatch(actions.getAllYears())
   };
 };
 
