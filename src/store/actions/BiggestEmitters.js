@@ -28,6 +28,14 @@ export const getData = (year) => {
             })
             console.log(sortedResponse)
             console.log(sortedResponseFilter)
+            let result = [];
+            sortedResponseFilter.forEach(res=>{
+                result.push({
+                    name:res.country.value,
+                    value:res.value
+                })               
+              })
+              console.log(result)
             // let years =[];
             // response.data[1].forEach(country=>{
             //    years.push(country.date)
