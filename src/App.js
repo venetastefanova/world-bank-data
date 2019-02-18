@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import './App.css';
+import {Switch, Route, withRouter} from 'react-router-dom';
 import Filter from './containers/Filter';
-
+import BiggestEmitters from './containers/BiggestEmitters';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <header className="App-header">
-         <Filter/>
+        <Switch>
+       
+          <Route path="/biggest-emitters" component={BiggestEmitters}/>
+          <Route exact path="/" component={Filter}/>
+        </Switch>
+        
       
         </header>
       </div>

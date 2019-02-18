@@ -127,10 +127,10 @@ class Filter extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentPopulationData: state.currentPopulationData,
-    currentEmissionsData:state.currentEmissionsData,
-    allCountries: state.allCountries,
-    years: state.years
+    currentPopulationData: state.Filter.currentPopulationData,
+    currentEmissionsData:state.Filter.currentEmissionsData,
+    allCountries: state.Filter.allCountries,
+    years: state.Filter.years
   };
 };
 
