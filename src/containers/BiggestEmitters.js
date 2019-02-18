@@ -1,13 +1,16 @@
 import React, { Component } from "react";
+import styles from './BiggestEmitters.module.css';
+
 import { withRouter } from "react-router-dom";
 import * as actionsFilter from "../store/actions/actions";
 import * as actionsEmitters from "../store/actions/BiggestEmitters";
 import { connect } from "react-redux";
+import CanvasJSReact from "../canvasjs.react";
 
 class BiggestEmitters extends Component {
-  state ={
+  state = {
     year: ""
-  }
+  };
   componentDidMount() {
     this.props.onGetAllYears();
   }
@@ -20,9 +23,9 @@ class BiggestEmitters extends Component {
   };
 
   getData = () => {
-    console.log("click")
+    console.log("click");
     this.props.onGetCountries(this.state.year);
-  }
+  };
   render() {
     const year = this.props.years.map((year, index) => {
       return (
@@ -31,9 +34,26 @@ class BiggestEmitters extends Component {
         </option>
       );
     });
+    const options = {
+      title: {
+        text: "Basic Column Chart in React"
+      },
+      data: [
+        {
+          type: "column",
+          dataPoints: [
+            { label: "Apple", y: 10 },
+            { label: "Orange", y: 15 },
+            { label: "Banana", y: 25 },
+            { label: "Mango", y: 30 },
+            { label: "Grape", y: 28 }
+          ]
+        }
+      ]
+    };
 
     return (
-      <div>
+      <div className={styles.Wrapper}>
         <div>
           <select onChange={this.getYearValue}>{year}</select>
         </div>
@@ -41,6 +61,12 @@ class BiggestEmitters extends Component {
           <button type="button" onClick={this.getData}>
             Search
           </button>
+        </div>
+        <div>
+          <CanvasJSReact.CanvasJSChart
+            options={options}
+            /* onRef = {ref => this.chart = ref} */
+          />
         </div>
       </div>
     );
@@ -56,7 +82,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onGetAllYears: () => dispatch(actionsFilter.getAllYears()),
-    onGetCountries: (year) => dispatch(actionsEmitters.getData(year))
+    onGetCountries: year => dispatch(actionsEmitters.getData(year))
   };
 };
 
