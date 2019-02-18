@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Switch, Route, withRouter} from 'react-router-dom';
+import {Switch, Route} from 'react-router-dom';
 import Filter from './containers/Filter';
 import BiggestEmitters from './containers/BiggestEmitters';
 
