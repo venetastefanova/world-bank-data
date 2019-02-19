@@ -1,12 +1,20 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
 
-export const getIntervalData = (data) => {
+export const fetchPopulationData = (populationData) => {
     return{
-        type: actionTypes.GET_YEARS_INTERVAL_DATA,
-        data:data
+      type: actionTypes.GET_YEARS_INTERVAL_POPULATION_DATA,
+      populationData:populationData
     }
 }
+
+export const fetchEmissionsData= (emissionsData) => {
+  return{
+      type: actionTypes.GET_YEARS_INTERVAL_EMISSIONS_DATA,
+      emissionsData:emissionsData
+  }
+}
+
 
 export const fetchDataFail = () => {
     return {
@@ -20,12 +28,11 @@ export const fetchDataFail = () => {
       // coming from redux thunk
       axios.get(`https://api.worldbank.org/v2/country/${country}/indicator/SP.POP.TOTL?format=json&date=${year1}:${year2}`)
         .then(response => {
-  
             console.log("yes woho")
             console.log(country)
             console.log(year1,year2)
             console.log(response.data[1]);
-        //    dispatch(fetchCurrentPopulationData(response.data[1]));
+            dispatch(fetchPopulationData(response.data[1]));
         })
         .catch(error => {
           dispatch(fetchDataFail());
@@ -36,7 +43,7 @@ export const fetchDataFail = () => {
             console.log(country)
             console.log(year1,year2)
             console.log(response.data[1]);
-            // dispatch(fetchCurrentEmissionsData(response.data[1]));
+            dispatch(fetchEmissionsData(response.data[1]));
         })
         .catch(error => {
           dispatch(fetchDataFail());
