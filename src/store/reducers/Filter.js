@@ -4,7 +4,8 @@ const initialState = {
   allCountries:[],
   currentPopulationData:  null,
   currentEmissionsData:null,
-  years:[]
+  years:[],
+  biggestEmitters:[]
 }
 
 const reducer = (state = initialState, action)=>{
@@ -28,11 +29,12 @@ const reducer = (state = initialState, action)=>{
           currentEmissionsData:action.currentEmissionsData
         }
       case actionTypes.FETCH_ALL_YEARS:
-      console.log(action.years)
+      // console.log(action.years)
           return{
             ...state,
             years: action.years
           }
+     
       default:
         return state;
     }

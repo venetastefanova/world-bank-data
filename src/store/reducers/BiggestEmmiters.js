@@ -1,6 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
+    visible:false,
     data:[]
 }
 
@@ -10,7 +11,8 @@ const reducer = (state = initialState, action)=>{
       console.log(action.data)
         return{
           ...state,
-          data:action.data
+          data:action.data,
+          visible:true
         }
       default:
         return state;

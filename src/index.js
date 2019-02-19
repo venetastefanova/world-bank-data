@@ -5,7 +5,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 import Filter from "./store/reducers/Filter";
-import BiggestEmitters from './store/reducers/BiggestEmmiter';
+import BiggestEmitters from './store/reducers/BiggestEmmiters';
 
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import { Provider } from "react-redux";

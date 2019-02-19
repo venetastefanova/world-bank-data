@@ -19,8 +19,7 @@ export const getData = (year) => {
     return dispatch => {
       // coming from redux thunk
       axios.get(`https://api.worldbank.org/v2/country/all/indicator/EN.ATM.CO2E.KT?format=json&per_page=300&date=2005`)
-        .then(response => {
-         
+        .then(response => {       
             console.log(response.data[1]);
             const sortedResponse = response.data[1].sort((a,b)=>b.value-a.value)
             const sortedResponseFilter = sortedResponse.filter(country=>{
@@ -31,16 +30,12 @@ export const getData = (year) => {
             let result = [];
             sortedResponseFilter.forEach(res=>{
                 result.push({
-                    name:res.country.value,
-                    value:res.value
+                    label:res.country.value,
+                    y:res.value
                 })               
               })
-              console.log(result)
-            // let years =[];
-            // response.data[1].forEach(country=>{
-            //    years.push(country.date)
-            // })
-            // dispatch(getBiggestEmitters(years));
+              console.log(result.slice(0,10))
+             dispatch(getBiggestEmitters(result.slice(0,10)));
         })
         .catch(error => {
           dispatch(fetchDataFail());

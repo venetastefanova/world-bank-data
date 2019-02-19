@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import styles from './BiggestEmitters.module.css';
+import styles from "./BiggestEmitters.module.css";
 
 import { withRouter } from "react-router-dom";
 import * as actionsFilter from "../store/actions/actions";
@@ -9,7 +9,9 @@ import CanvasJSReact from "../canvasjs.react";
 
 class BiggestEmitters extends Component {
   state = {
-    year: ""
+    year: "",
+    visible: false,
+    result: []
   };
   componentDidMount() {
     this.props.onGetAllYears();
@@ -25,7 +27,9 @@ class BiggestEmitters extends Component {
   getData = () => {
     console.log("click");
     this.props.onGetCountries(this.state.year);
+    // this.setState({visible:true})
   };
+
   render() {
     const year = this.props.years.map((year, index) => {
       return (
@@ -34,23 +38,25 @@ class BiggestEmitters extends Component {
         </option>
       );
     });
-    const options = {
+
+    let options = {
       title: {
-        text: "Basic Column Chart in React"
+        text: `Top 10 emitters for ${this.state.year}`
       },
       data: [
         {
           type: "column",
-          dataPoints: [
-            { label: "Apple", y: 10 },
-            { label: "Orange", y: 15 },
-            { label: "Banana", y: 25 },
-            { label: "Mango", y: 30 },
-            { label: "Grape", y: 28 }
-          ]
+          dataPoints: []
         }
       ]
     };
+
+    if (this.props.biggestEmitters) {
+      this.props.biggestEmitters.forEach(country => {
+        console.log(country);
+        options.data[0].dataPoints.push(country);
+      });
+    }
 
     return (
       <div className={styles.Wrapper}>
@@ -62,11 +68,13 @@ class BiggestEmitters extends Component {
             Search
           </button>
         </div>
-        <div>
-          <CanvasJSReact.CanvasJSChart
-            options={options}
-            /* onRef = {ref => this.chart = ref} */
-          />
+        <div className={styles.Chart}>
+          {this.props.visible === true ? (
+            <CanvasJSReact.CanvasJSChart
+              options={options}
+              /* onRef = {ref => this.chart = ref} */
+            />
+          ) : null}
         </div>
       </div>
     );
@@ -75,7 +83,9 @@ class BiggestEmitters extends Component {
 
 const mapStateToProps = state => {
   return {
-    years: state.Filter.years
+    years: state.Filter.years,
+    biggestEmitters: state.BiggestEmitters.data,
+    visible: state.BiggestEmitters.visible
   };
 };
 
