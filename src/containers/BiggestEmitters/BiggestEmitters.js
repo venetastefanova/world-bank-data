@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import styles from "./BiggestEmitters.module.css";
 
 import { withRouter } from "react-router-dom";
-import * as actionsFilter from "../store/actions/actions";
-import * as actionsEmitters from "../store/actions/BiggestEmitters";
+import * as actionsEmitters from "../../store/actions/BiggestEmitters";
 import { connect } from "react-redux";
-import CanvasJSReact from "../canvasjs.react";
+import CanvasJSReact from "../../canvasjs.react";
 
 class BiggestEmitters extends Component {
   state = {
@@ -13,9 +12,6 @@ class BiggestEmitters extends Component {
     visible: false,
     result: []
   };
-  componentDidMount() {
-    this.props.onGetAllYears();
-  }
 
   getYearValue = e => {
     this.setState({
@@ -56,6 +52,9 @@ class BiggestEmitters extends Component {
         console.log(country);
         options.data[0].dataPoints.push(country);
       });
+
+      console.log(options)
+
     }
 
     return (
@@ -75,6 +74,7 @@ class BiggestEmitters extends Component {
               /* onRef = {ref => this.chart = ref} */
             />
           ) : null}
+          
         </div>
       </div>
     );
@@ -83,7 +83,6 @@ class BiggestEmitters extends Component {
 
 const mapStateToProps = state => {
   return {
-    years: state.Filter.years,
     biggestEmitters: state.BiggestEmitters.data,
     visible: state.BiggestEmitters.visible
   };
@@ -91,7 +90,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetAllYears: () => dispatch(actionsFilter.getAllYears()),
     onGetCountries: year => dispatch(actionsEmitters.getData(year))
   };
 };

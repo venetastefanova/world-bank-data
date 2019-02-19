@@ -8,7 +8,6 @@ export const getBiggestEmitters = (data) => {
     }
 }
 
-
 export const fetchDataFail = () => {
     return {
       type: actionTypes.FETCH_DATA_FAIL
@@ -18,7 +17,7 @@ export const fetchDataFail = () => {
 export const getData = (year) => {
     return dispatch => {
       // coming from redux thunk
-      axios.get(`https://api.worldbank.org/v2/country/all/indicator/EN.ATM.CO2E.KT?format=json&per_page=300&date=2005`)
+      axios.get(`https://api.worldbank.org/v2/country/all/indicator/EN.ATM.CO2E.KT?format=json&per_page=300&date=${year}`)
         .then(response => {       
             console.log(response.data[1]);
             const sortedResponse = response.data[1].sort((a,b)=>b.value-a.value)

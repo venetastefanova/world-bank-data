@@ -59,8 +59,8 @@ class Filter extends Component {
 
   componentDidMount() {
     this.props.onGetAllCountries();
-    this.props.onGetAllYears();
-    console.log("heeeeei");
+    // this.props.onGetAllYears();
+    console.log(this.props.years);
   }
 
   getCountryCode = () => {
@@ -129,8 +129,7 @@ const mapStateToProps = state => {
   return {
     currentPopulationData: state.Filter.currentPopulationData,
     currentEmissionsData:state.Filter.currentEmissionsData,
-    allCountries: state.Filter.allCountries,
-    years: state.Filter.years
+    allCountries: state.Filter.allCountries
   };
 };
 
@@ -138,9 +137,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onGetCountryCode: (country, year) =>
       dispatch(actions.getCountry(country, year)),
-    onGetAllCountries: () => dispatch(actions.getAllCountries()),
-    onGetAllYears: () => dispatch(actions.getAllYears())
-  };
+    onGetAllCountries: () => dispatch(actions.getAllCountries())
+    };
 };
 
 export default connect(
