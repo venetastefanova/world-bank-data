@@ -53,7 +53,7 @@ class BiggestEmitters extends Component {
         options.data[0].dataPoints.push(country);
       });
 
-      console.log(options)
+      // console.log(options)
 
     }
 

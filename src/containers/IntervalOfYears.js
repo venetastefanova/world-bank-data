@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import { withRouter } from "react-router-dom";
 import * as actions from "../store/actions/actions";
+import styles from './BiggestEmitters/BiggestEmitters.module.css';
 
 import * as actionsIntervalOfYears from "../store/actions/IntervalOfYears";
 import { connect } from "react-redux";
@@ -14,7 +15,9 @@ class IntervalOfYears extends Component {
     year2: "",
     value: "",
     suggestions: [],
-    countryCode: ""
+    country:"",
+    countryCode: "",
+    visible: false
   };
   //gets the input and trims it
   getSuggestions = value => {
@@ -73,7 +76,8 @@ class IntervalOfYears extends Component {
     );
     console.log(code);
     this.setState({
-      country: code.id
+      countryCode: code.id,
+      country:code.name
     });
     this.props.onGetCountryDataForIntervalYears(code.id, this.state.year1, this.state.year2);
   };
@@ -108,8 +112,47 @@ class IntervalOfYears extends Component {
       );
     });
 
+    let options = {
+      animationEnabled: true,	
+      title:{
+        text: `Population vs. Emissions in ${this.state.country} between ${this.state.year1} and ${this.state.year2}`
+      },
+      axisY : {
+        title: "Number of Customers",
+        includeZero: true
+      },
+      toolTip: {
+        shared: true
+      },
+      data: [{
+        type: "spline",
+        name: "Population",
+        showInLegend: true,
+        dataPoints: [ ]
+      },
+      {
+        type: "spline",
+        name: "Emissions",
+        showInLegend: true,
+        dataPoints: []
+      }]
+  }
+
+  console.log(this.props.populationData)
+    if (this.props.populationData && this.props.emissionsData) {
+      this.props.populationData.forEach(countryPopulation => {
+        console.log(countryPopulation);
+        options.data[0].dataPoints.push(countryPopulation);
+      })
+      this.props.emissionsData.forEach(emissionsData=>{
+        console.log(emissionsData);
+        options.data[1].dataPoints.push(emissionsData);
+      })
+      }
+      // console.log(options)
+
     return (
-      <div>
+      <div className={styles.Wrapper}>
         <Autosuggest
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -124,6 +167,16 @@ class IntervalOfYears extends Component {
         <button type="button" onClick={this.getCountryCode}>
           Search
         </button>
+
+        <div className={styles.Chart}>
+          {this.props.visible === true ? (
+            <CanvasJSReact.CanvasJSChart
+              options={options}
+              /* onRef = {ref => this.chart = ref} */
+            />
+          ) : null}
+          
+        </div>
       </div>
     );
   }
@@ -131,9 +184,10 @@ class IntervalOfYears extends Component {
 
 const mapStateToProps = state => {
   return {
-    // currentPopulationData: state.Filter.currentPopulationData,
-    // currentEmissionsData: state.Filter.currentEmissionsData,
-    allCountries: state.Filter.allCountries
+    populationData: state.IntervalOfYears.populationData,
+    emissionsData: state.IntervalOfYears.emissionsData,
+    allCountries: state.Filter.allCountries,
+    visible: state.IntervalOfYears.visible
   };
 };
 

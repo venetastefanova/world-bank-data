@@ -6,6 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 
 import Filter from "./store/reducers/Filter";
 import BiggestEmitters from './store/reducers/BiggestEmmiters';
+import IntervalOfYears from './store/reducers/IntervalOfYears'
 
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import { Provider } from "react-redux";
@@ -17,7 +18,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   Filter:Filter,
-  BiggestEmitters:BiggestEmitters
+  BiggestEmitters:BiggestEmitters,
+  IntervalOfYears: IntervalOfYears
 })
 //create store
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));

@@ -2,7 +2,9 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   populationData:  null,
-  emissionsData:null
+  emissionsData:null,
+  visible:false
+
 }
 
 const reducer = (state = initialState, action)=>{
@@ -11,13 +13,14 @@ const reducer = (state = initialState, action)=>{
       console.log(action.populationData)
         return{
           ...state,
-          PopulationData:action.populationData
+          populationData:action.populationData
         }
       case actionTypes.GET_YEARS_INTERVAL_EMISSIONS_DATA:
          console.log(action.emissionsData)
           return{
             ...state,
-            emissionsData:action.emissionsData
+            emissionsData:action.emissionsData,
+            visible:true
           }
       default:
         return state;
