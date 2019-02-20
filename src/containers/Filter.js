@@ -67,12 +67,24 @@ class Filter extends Component {
     const code = this.props.allCountries.find(
       country => country.name === this.state.value
     );
-    console.log(code);
-    this.setState({
-      country: code.id
-    });
 
-    this.props.onGetCountryCode(code.id, this.state.year);
+    //checks if country input is empty
+    this.state.value === undefined ||
+    this.state.value === null ||
+    this.state.value === ""
+      ? alert("Please select a country!")
+      : this.setState({
+          countryCode: code.id,
+          country: code.name
+        });
+
+    !this.state.year
+      ? alert("Please select a year!") //checks if years are empty
+      : this.state.year === undefined ||
+        this.state.year === null ||
+        this.state.year === ""
+      ? alert("Please select a year interval!")
+      : this.props.onGetCountryCode(code.id, this.state.year);
   };
   getValue = e => {
     this.setState({
@@ -111,14 +123,19 @@ class Filter extends Component {
         />
 
         <select onChange={this.getValue}>
-        
-        {year}</select>
+          <option value="">Year</option>
+          {year}
+        </select>
         <button type="button" onClick={this.getCountryCode}>
           Search
         </button>
 
         <div>
-          <Result countryName={this.state.value} populationData={this.props.currentPopulationData} emissionsData={this.props.currentEmissionsData}/>
+          <Result
+            countryName={this.state.value}
+            populationData={this.props.currentPopulationData}
+            emissionsData={this.props.currentEmissionsData}
+          />
         </div>
       </div>
     );
@@ -128,7 +145,7 @@ class Filter extends Component {
 const mapStateToProps = state => {
   return {
     currentPopulationData: state.Filter.currentPopulationData,
-    currentEmissionsData:state.Filter.currentEmissionsData,
+    currentEmissionsData: state.Filter.currentEmissionsData,
     allCountries: state.Filter.allCountries
   };
 };
@@ -138,7 +155,7 @@ const mapDispatchToProps = dispatch => {
     onGetCountryCode: (country, year) =>
       dispatch(actions.getCountry(country, year)),
     onGetAllCountries: () => dispatch(actions.getAllCountries())
-    };
+  };
 };
 
 export default connect(

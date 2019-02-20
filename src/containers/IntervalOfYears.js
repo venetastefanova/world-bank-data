@@ -177,8 +177,8 @@ class IntervalOfYears extends Component {
           renderSuggestion={this.renderSuggestion}
           inputProps={inputProps}
         />
-        <select onChange={this.getValueYear1}>{year}</select> -
-        <select onChange={this.getValueYear2}>{year}</select>
+        <select onChange={this.getValueYear1}><option value="">Year</option>{year}</select> -
+        <select onChange={this.getValueYear2}><option value="">Year</option>{year}</select>
         <button type="button" onClick={this.getCountryCode}>
           Search
         </button>
