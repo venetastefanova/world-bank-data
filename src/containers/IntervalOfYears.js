@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { withRouter } from "react-router-dom";
 import * as actions from "../store/actions/actions";
-import styles from './BiggestEmitters/BiggestEmitters.module.css';
+import styles from "./BiggestEmitters/BiggestEmitters.module.css";
 
 import * as actionsIntervalOfYears from "../store/actions/IntervalOfYears";
 import { connect } from "react-redux";
@@ -15,7 +15,7 @@ class IntervalOfYears extends Component {
     year2: "",
     value: "",
     suggestions: [],
-    country:"",
+    country: "",
     countryCode: "",
     visible: false
   };
@@ -66,7 +66,6 @@ class IntervalOfYears extends Component {
 
   componentDidMount() {
     this.props.onGetAllCountries();
-    // this.props.onGetAllYears();
     console.log(this.props.years);
   }
 
@@ -74,24 +73,37 @@ class IntervalOfYears extends Component {
     const code = this.props.allCountries.find(
       country => country.name === this.state.value
     );
-    console.log(code);
-    this.setState({
-      countryCode: code.id,
-      country:code.name
-    });
-    this.props.onGetCountryDataForIntervalYears(code.id, this.state.year1, this.state.year2);
+    //checks if country input is empty
+    this.state.value === undefined ||
+    this.state.value === null ||
+    this.state.value === ""
+      ? alert("Please select a country!")
+      : this.setState({
+          countryCode: code.id,
+          country: code.name
+        });
+    //cheks if start year value is smaller
+    this.state.year1 > this.state.year2
+      ? alert("Second year value should be bigger than the first") //checks if years are empty
+      : (this.state.year1 === undefined && this.state.year2 === undefined) ||
+        (this.state.year1 === null && this.state.year2 === null) ||
+        (this.state.year1 === "" && this.state.year2 === "")
+      ? alert("Please select a year interval!")
+      : this.props.onGetCountryDataForIntervalYears(
+          code.id,
+          this.state.year1,
+          this.state.year2
+        );
   };
   getValueYear1 = e => {
     this.setState({
       year1: e.target.value
     });
-    console.log(e.target.value);
   };
   getValueYear2 = e => {
     this.setState({
       year2: e.target.value
     });
-    console.log(e.target.value);
   };
 
   render() {
@@ -113,43 +125,47 @@ class IntervalOfYears extends Component {
     });
 
     let options = {
-      animationEnabled: true,	
-      title:{
-        text: `Population vs. Emissions in ${this.state.country} between ${this.state.year1} and ${this.state.year2}`
+      animationEnabled: true,
+      title: {
+        text: `Population vs. Emissions in ${this.state.country} between ${
+          this.state.year1
+        } and ${this.state.year2}`
       },
-      axisY : {
+      axisY: {
         title: "Number of Customers",
         includeZero: true
       },
       toolTip: {
         shared: true
       },
-      data: [{
-        type: "spline",
-        name: "Population",
-        showInLegend: true,
-        dataPoints: [ ]
-      },
-      {
-        type: "spline",
-        name: "Emissions",
-        showInLegend: true,
-        dataPoints: []
-      }]
-  }
+      data: [
+        {
+          type: "spline",
+          name: "Population",
+          showInLegend: true,
+          dataPoints: []
+        },
+        {
+          type: "spline",
+          name: "Emissions",
+          showInLegend: true,
+          dataPoints: []
+        }
+      ]
+    };
 
-  console.log(this.props.populationData)
+    console.log(this.props.populationData);
     if (this.props.populationData && this.props.emissionsData) {
       this.props.populationData.forEach(countryPopulation => {
         console.log(countryPopulation);
         options.data[0].dataPoints.push(countryPopulation);
-      })
-      this.props.emissionsData.forEach(emissionsData=>{
+      });
+      this.props.emissionsData.forEach(emissionsData => {
         console.log(emissionsData);
         options.data[1].dataPoints.push(emissionsData);
-      })
-      }
-      // console.log(options)
+      });
+    }
+    // console.log(options)
 
     return (
       <div className={styles.Wrapper}>
@@ -161,13 +177,11 @@ class IntervalOfYears extends Component {
           renderSuggestion={this.renderSuggestion}
           inputProps={inputProps}
         />
-
-        <select onChange={this.getValueYear1}>{year}</select> - 
+        <select onChange={this.getValueYear1}>{year}</select> -
         <select onChange={this.getValueYear2}>{year}</select>
         <button type="button" onClick={this.getCountryCode}>
           Search
         </button>
-
         <div className={styles.Chart}>
           {this.props.visible === true ? (
             <CanvasJSReact.CanvasJSChart
@@ -175,7 +189,6 @@ class IntervalOfYears extends Component {
               /* onRef = {ref => this.chart = ref} */
             />
           ) : null}
-          
         </div>
       </div>
     );
@@ -193,7 +206,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetCountryDataForIntervalYears: (country, year1,year2) => dispatch(actionsIntervalOfYears.getCountryDataForIntervalYears(country, year1,year2)),
+    onGetCountryDataForIntervalYears: (country, year1, year2) =>
+      dispatch(
+        actionsIntervalOfYears.getCountryDataForIntervalYears(
+          country,
+          year1,
+          year2
+        )
+      ),
     onGetAllCountries: () => dispatch(actions.getAllCountries())
   };
 };
