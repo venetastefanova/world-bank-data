@@ -21,8 +21,13 @@ class BiggestEmitters extends Component {
   };
 
   getData = () => {
-    console.log("click");
-    this.props.onGetCountries(this.state.year);
+    !this.state.year
+    ? alert("Please select a year!") //checks if years are empty
+    : this.state.year === undefined ||
+      this.state.year === null ||
+      this.state.year === ""
+    ? alert("Please select a year!")
+    : this.props.onGetCountries(this.state.year);
     // this.setState({visible:true})
   };
 
@@ -54,13 +59,12 @@ class BiggestEmitters extends Component {
       });
 
       // console.log(options)
-
     }
 
     return (
       <div className={styles.Wrapper}>
         <div>
-          <select onChange={this.getYearValue}>{year}</select>
+          <select onChange={this.getYearValue}><option value="">Year</option>{year}</select>
         </div>
         <div>
           <button type="button" onClick={this.getData}>
@@ -74,7 +78,6 @@ class BiggestEmitters extends Component {
               /* onRef = {ref => this.chart = ref} */
             />
           ) : null}
-          
         </div>
       </div>
     );
