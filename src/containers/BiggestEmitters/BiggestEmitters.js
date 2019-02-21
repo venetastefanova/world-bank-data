@@ -17,18 +17,18 @@ class BiggestEmitters extends Component {
     this.setState({
       year: e.target.value
     });
+
     console.log(e.target.value);
   };
 
   getData = () => {
     !this.state.year
-    ? alert("Please select a year!") //checks if years are empty
-    : this.state.year === undefined ||
-      this.state.year === null ||
-      this.state.year === ""
-    ? alert("Please select a year!")
-    : this.props.onGetCountries(this.state.year);
-    // this.setState({visible:true})
+      ? alert("Please select a year!") //checks if years are empty
+      : this.state.year === undefined ||
+        this.state.year === null ||
+        this.state.year === ""
+      ? alert("Please select a year!")
+      : this.props.onGetCountries(this.state.year);
   };
 
   render() {
@@ -41,30 +41,76 @@ class BiggestEmitters extends Component {
     });
 
     let options = {
+      animationEnabled: true,
       title: {
-        text: `Top 10 emitters for ${this.state.year}`
+        text: `The top 10 biggest emitters countries in ${this.state.year}`
+      },
+      axisY: {
+        title: "Population",
+        includeZero: true
+      },
+      toolTip: {
+        shared: true
       },
       data: [
         {
-          type: "column",
+          type: "spline",
+          name: "Population",
+          showInLegend: true,
+          dataPoints: []
+        },
+        {
+          type: "spline",
+          name: "Emissions",
+          showInLegend: true,
           dataPoints: []
         }
       ]
     };
 
-    if (this.props.biggestEmitters) {
-      this.props.biggestEmitters.forEach(country => {
-        console.log(country);
-        options.data[0].dataPoints.push(country);
+    if (this.props.emissions && this.props.populations) {
+      let result = [];
+      var test = this.props.populations;
+      this.props.emissions.forEach(function(element) {
+        result.push({
+          label: element.label,
+          emissions: element.emissions,
+          populations: test.filter(e => e.label === element.label)
+        });
       });
 
-      // console.log(options)
+      var emissions = [];
+      var populations = [];
+      result.map(emission => {
+        return emissions.push({
+          label: emission.label,
+          y: emission.emissions
+        });
+      });
+      result.map(population => {
+        return population.populations.forEach(item => {
+          populations.push({
+            label: item.label,
+            y: item.populations
+          });
+        });
+      });
+
+      populations.forEach(countryPopulation => {
+        options.data[0].dataPoints.push(countryPopulation);
+      });
+      emissions.forEach(emissionsData => {
+        options.data[1].dataPoints.push(emissionsData);
+      });
     }
 
     return (
       <div className={styles.Wrapper}>
         <div>
-          <select onChange={this.getYearValue}><option value="">Year</option>{year}</select>
+          <select onChange={this.getYearValue}>
+            <option value="">Year</option>
+            {year}
+          </select>
         </div>
         <div>
           <button type="button" onClick={this.getData}>
@@ -86,7 +132,8 @@ class BiggestEmitters extends Component {
 
 const mapStateToProps = state => {
   return {
-    biggestEmitters: state.BiggestEmitters.data,
+    emissions: state.BiggestEmitters.emissions,
+    populations: state.BiggestEmitters.populations,
     visible: state.BiggestEmitters.visible
   };
 };

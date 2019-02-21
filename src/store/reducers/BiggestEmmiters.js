@@ -2,18 +2,25 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     visible:false,
-    data:[]
+    emissions:[],
+    populations: []
 }
 
 const reducer = (state = initialState, action)=>{
     switch(action.type){
-      case actionTypes.GET_BIGGEST_EMITTERS_IN_SPECIFIC_YEAR:
-      console.log(action.data)
+      case actionTypes.GET_BIGGEST_EMISSIONS_IN_SPECIFIC_YEAR:
+     // console.log(action.emissions)
         return{
           ...state,
-          data:action.data,
-          visible:true
+          emissions:action.emissions
         }
+      case actionTypes.GET_BIGGEST_POPULATION_IN_SPECIFIC_YEAR:
+      //console.log(action.populations)
+      return{
+        ...state,
+        populations:action.populations,
+        visible:true
+      }
       default:
         return state;
     }

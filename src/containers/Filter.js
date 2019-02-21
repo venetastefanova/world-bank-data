@@ -67,24 +67,27 @@ class Filter extends Component {
     const code = this.props.allCountries.find(
       country => country.name === this.state.value
     );
+    if (code === undefined) {
+      alert("The given input is not valid!");
+    } else {
+      //checks if country input is empty
+      this.state.value === undefined ||
+      this.state.value === null ||
+      this.state.value === ""
+        ? alert("Please select a country!")
+        : this.setState({
+            countryCode: code.id,
+            country: code.name
+          });
 
-    //checks if country input is empty
-    this.state.value === undefined ||
-    this.state.value === null ||
-    this.state.value === ""
-      ? alert("Please select a country!")
-      : this.setState({
-          countryCode: code.id,
-          country: code.name
-        });
-
-    !this.state.year
-      ? alert("Please select a year!") //checks if years are empty
-      : this.state.year === undefined ||
-        this.state.year === null ||
-        this.state.year === ""
-      ? alert("Please select a year interval!")
-      : this.props.onGetCountryCode(code.id, this.state.year);
+      !this.state.year
+        ? alert("Please select a year!") //checks if years are empty
+        : this.state.year === undefined ||
+          this.state.year === null ||
+          this.state.year === ""
+        ? alert("Please select a year interval!")
+        : this.props.onGetCountryCode(code.id, this.state.year);
+    }
   };
   getValue = e => {
     this.setState({
