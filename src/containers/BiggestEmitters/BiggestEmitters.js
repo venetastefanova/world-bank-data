@@ -10,15 +10,14 @@ class BiggestEmitters extends Component {
   state = {
     year: "",
     visible: false,
-    result: []
+    result: [],
+    showPopulationSpline: false
   };
 
   getYearValue = e => {
     this.setState({
       year: e.target.value
     });
-
-    console.log(e.target.value);
   };
 
   getData = () => {
@@ -31,6 +30,12 @@ class BiggestEmitters extends Component {
       : this.props.onGetCountries(this.state.year);
   };
 
+  showPopulation = e => {
+    this.setState(prevState => ({
+      showPopulationSpline: !prevState.showPopulationSpline
+    }));
+    console.log(this.state.showPopulationSpline);
+  };
   render() {
     const year = this.props.years.map((year, index) => {
       return (
@@ -46,7 +51,7 @@ class BiggestEmitters extends Component {
         text: `The top 10 biggest emitters countries in ${this.state.year}`
       },
       axisY: {
-        title: "Population",
+        title: "Emissions",
         includeZero: true
       },
       toolTip: {
@@ -55,13 +60,13 @@ class BiggestEmitters extends Component {
       data: [
         {
           type: "spline",
-          name: "Population",
+          name: "emissions",
           showInLegend: true,
           dataPoints: []
         },
         {
           type: "spline",
-          name: "Emissions",
+          name: "population",
           showInLegend: true,
           dataPoints: []
         }
@@ -96,14 +101,18 @@ class BiggestEmitters extends Component {
         });
       });
 
-      populations.forEach(countryPopulation => {
-        options.data[0].dataPoints.push(countryPopulation);
-      });
+      console.log(emissions);
+      console.log(populations);
+
       emissions.forEach(emissionsData => {
-        options.data[1].dataPoints.push(emissionsData);
+        options.data[0].dataPoints.push(emissionsData);
       });
     }
-
+    if (this.state.showPopulationSpline) {
+      populations.forEach(countryPopulation => {
+        options.data[1].dataPoints.push(countryPopulation);
+      });
+    }
     return (
       <div className={styles.Wrapper}>
         <div>
@@ -119,10 +128,20 @@ class BiggestEmitters extends Component {
         </div>
         <div className={styles.Chart}>
           {this.props.visible === true ? (
-            <CanvasJSReact.CanvasJSChart
-              options={options}
-              /* onRef = {ref => this.chart = ref} */
-            />
+            <div>
+              <input
+                onChange={this.showPopulation}
+                type="checkbox"
+                name="checkbox"
+                id="checkbox_id"
+                value="value"
+              />
+              <label htmlFor="checkbox_id">Show population</label>
+              <CanvasJSReact.CanvasJSChart
+                options={options}
+                /* onRef = {ref => this.chart = ref} */
+              />
+            </div>
           ) : null}
         </div>
       </div>
