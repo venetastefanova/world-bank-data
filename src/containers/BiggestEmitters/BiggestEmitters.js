@@ -100,10 +100,6 @@ class BiggestEmitters extends Component {
           });
         });
       });
-
-      console.log(emissions);
-      console.log(populations);
-
       emissions.forEach(emissionsData => {
         options.data[0].dataPoints.push(emissionsData);
       });

@@ -18,7 +18,8 @@ class IntervalOfYears extends Component {
     suggestions: [],
     country: "",
     countryCode: "",
-    visible: false
+    visible: false,
+    showPopulationSpline: false
   };
   //gets the input and trims it
   getSuggestions = value => {
@@ -90,7 +91,9 @@ class IntervalOfYears extends Component {
         (this.state.year1 === null && this.state.year2 === null) ||
         (this.state.year1 === "" && this.state.year2 === "")
       ? alert("Please select a year interval!")
-      : this.props.onGetMyCountry(code.id);
+      : this.props.onGetMyCountry(code.id, this.state.year1, this.state.year2);
+        console.log(this.state.year1)
+        console.log(this.state.year2)
   };
   getValueYear1 = e => {
     this.setState({
@@ -101,6 +104,12 @@ class IntervalOfYears extends Component {
     this.setState({
       year2: e.target.value
     });
+  };
+  showPopulation = e => {
+    this.setState(prevState => ({
+      showPopulationSpline: !prevState.showPopulationSpline
+    }));
+    console.log(this.state.showPopulationSpline);
   };
 
   render() {
@@ -129,7 +138,7 @@ class IntervalOfYears extends Component {
         } and ${this.state.year2}`
       },
       axisY: {
-        title: "Number of Customers",
+        title: "Values",
         includeZero: true
       },
       toolTip: {
@@ -151,15 +160,19 @@ class IntervalOfYears extends Component {
       ]
     };
 
-    console.log(this.props.populationData);
-    if (this.props.populationData && this.props.emissionsData) {
-      this.props.populationData.forEach(countryPopulation => {
-        console.log(countryPopulation);
-        options.data[0].dataPoints.push(countryPopulation);
-      });
+    // console.log(this.props.populationData);
+    if (this.props.emissionsData) {
       this.props.emissionsData.forEach(emissionsData => {
         console.log(emissionsData);
         options.data[1].dataPoints.push(emissionsData);
+      });
+   
+      
+    }
+    if (this.state.showPopulationSpline) {
+      this.props.populationData.forEach(countryPopulation => {
+        console.log(countryPopulation);
+        options.data[0].dataPoints.push(countryPopulation);
       });
     }
     // console.log(options)
@@ -181,10 +194,20 @@ class IntervalOfYears extends Component {
         </button>
         <div className={styles.Chart}>
           {this.props.visible === true ? (
-            <CanvasJSReact.CanvasJSChart
-              options={options}
-              /* onRef = {ref => this.chart = ref} */
-            />
+           <div>
+           <input
+             onChange={this.showPopulation}
+             type="checkbox"
+             name="checkbox"
+             id="checkbox_id"
+             value="value"
+           />
+           <label htmlFor="checkbox_id">Show population</label>
+           <CanvasJSReact.CanvasJSChart
+             options={options}
+             /* onRef = {ref => this.chart = ref} */
+           />
+         </div>
           ) : null}
         </div>
       </div>
@@ -194,24 +217,16 @@ class IntervalOfYears extends Component {
 
 const mapStateToProps = state => {
   return {
-    populationData: state.IntervalOfYears.populationData,
-    emissionsData: state.IntervalOfYears.emissionsData,
+    populationData: state.NearMe.populationData,
+    emissionsData: state.NearMe.emissionsData,
     allCountries: state.Filter.allCountries,
-    visible: state.IntervalOfYears.visible
+    visible: state.NearMe.visible
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    // onGetCountryDataForIntervalYears: (country, year1, year2) =>
-    //   dispatch(
-    //     actionsIntervalOfYears.getCountryDataForIntervalYears(
-    //       country,
-    //       year1,
-    //       year2
-    //     )
-    //   ),
-    onGetMyCountry:(country) => dispatch(actionsNearMe.getMyCountry(country)),
+    onGetMyCountry:(country, year1, year2) => dispatch(actionsNearMe.getMyCountry(country, year1, year2) ),
     onGetAllCountries: () => dispatch(actions.getAllCountries())
   };
 };
