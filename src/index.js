@@ -8,6 +8,7 @@ import Filter from "./store/reducers/Filter";
 import BiggestEmitters from './store/reducers/BiggestEmmiters';
 import IntervalOfYears from './store/reducers/IntervalOfYears';
 import NearMe from './store/reducers/NearMe';
+import WorldPower from './store/reducers/WorldPower';
 
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import { Provider } from "react-redux";
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   Filter:Filter,
   BiggestEmitters:BiggestEmitters,
   IntervalOfYears: IntervalOfYears,
-  NearMe:NearMe
+  NearMe:NearMe,
+  WorldPower:WorldPower
 })
 //create store
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));

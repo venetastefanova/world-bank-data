@@ -5,6 +5,7 @@ import Filter from './containers/Filter';
 import BiggestEmitters from './containers/BiggestEmitters/BiggestEmitters';
 import IntervalOfYears from './containers/IntervalOfYears';
 import NearMe from './containers/NearMe';
+import WorldPower from './containers/WorldPower';
 
 import {connect} from 'react-redux';
 import * as actions from './store/actions/actions'
@@ -21,6 +22,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
         <Switch>
+          <Route path="/world-power" render={(props) => <WorldPower {...props} years={this.props.years} />}/>
           <Route path="/near-me" render={(props) => <NearMe {...props} years={this.props.years} />}/>
           <Route path="/interval-of-years" render={(props) => <IntervalOfYears {...props} years={this.props.years} />}/>
           <Route path="/biggest-emitters" render={(props) => <BiggestEmitters {...props} years={this.props.years} />}/>
