@@ -1,7 +1,10 @@
 import React, { Component } from "react";
-import * as actions from "../store/actions/actions";
 import { connect } from "react-redux";
 import Autosuggest from "react-autosuggest";
+//components and actions imports
+import * as actions from "../store/actions/actions";
+import YearPicker from "../components/YearPicker";
+import SearchButton from "../components/SearchButton";
 import Result from "../components/Result";
 
 class Filter extends Component {
@@ -11,13 +14,13 @@ class Filter extends Component {
     countryCode: "",
     year: ""
   };
-
-  //gets the input and trims it
+  componentDidMount() {
+    this.props.onGetAllCountries();
+  }
+  //checks if the input value matches the provided country information
   getSuggestions = value => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
-
-    //checks if the input value matches the provided country information
     return inputLength === 0
       ? []
       : this.props.allCountries.filter(
@@ -57,12 +60,6 @@ class Filter extends Component {
     });
   };
 
-  componentDidMount() {
-    this.props.onGetAllCountries();
-    // this.props.onGetAllYears();
-    console.log(this.props.years);
-  }
-
   getCountryCode = () => {
     const code = this.props.allCountries.find(
       country => country.name === this.state.value
@@ -79,9 +76,9 @@ class Filter extends Component {
             countryCode: code.id,
             country: code.name
           });
-
+      //checks for a year selection
       !this.state.year
-        ? alert("Please select a year!") //checks if years are empty
+        ? alert("Please select a year!")
         : this.state.year === undefined ||
           this.state.year === null ||
           this.state.year === ""
@@ -89,30 +86,20 @@ class Filter extends Component {
         : this.props.onGetCountryCode(code.id, this.state.year);
     }
   };
-  getValue = e => {
+  getYearValue = e => {
     this.setState({
       year: e.target.value
     });
-    console.log(e.target.value);
   };
 
   render() {
+    //passing props to auto suggest
     const { value, suggestions } = this.state;
-    // Autosuggest will pass through all these props to the input.
-
     const inputProps = {
       placeholder: "Country",
       value,
       onChange: this.onChange
     };
-
-    const year = this.props.years.map((year, index) => {
-      return (
-        <option key={index} value={year}>
-          {year}
-        </option>
-      );
-    });
 
     return (
       <div>
@@ -124,22 +111,13 @@ class Filter extends Component {
           renderSuggestion={this.renderSuggestion}
           inputProps={inputProps}
         />
-
-        <select onChange={this.getValue}>
-          <option value="">Year</option>
-          {year}
-        </select>
-        <button type="button" onClick={this.getCountryCode}>
-          Search
-        </button>
-
-        <div>
-          <Result
-            countryName={this.state.value}
-            populationData={this.props.currentPopulationData}
-            emissionsData={this.props.currentEmissionsData}
-          />
-        </div>
+        <YearPicker selected={this.getYearValue} years={this.props.years} />
+        <SearchButton clicked={this.getCountryCode} />
+        <Result
+          countryName={this.state.value}
+          populationData={this.props.currentPopulationData}
+          emissionsData={this.props.currentEmissionsData}
+        />
       </div>
     );
   }

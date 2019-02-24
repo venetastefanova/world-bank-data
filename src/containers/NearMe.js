@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-
 import { withRouter } from "react-router-dom";
-import * as actions from "../store/actions/actions";
-import styles from "./BiggestEmitters/BiggestEmitters.module.css";
-
-import * as actionsNearMe from "../store/actions/NearMe";
-
 import { connect } from "react-redux";
+
+import * as actions from "../store/actions/actions";
+import * as actionsNearMe from "../store/actions/NearMe";
+import styles from "./BiggestEmitters/BiggestEmitters.module.css";
 import Autosuggest from "react-autosuggest";
-import CanvasJSReact from "../canvasjs.react";
+import YearPicker from "../components/YearPicker";
+import SearchButton from "../components/SearchButton";
+import Graph from "../components/Graph";
 
 class IntervalOfYears extends Component {
   state = {
@@ -68,7 +68,6 @@ class IntervalOfYears extends Component {
 
   componentDidMount() {
     this.props.onGetAllCountries();
-    console.log(this.props.years);
   }
 
   getCountryCode = () => {
@@ -91,9 +90,11 @@ class IntervalOfYears extends Component {
         (this.state.year1 === null && this.state.year2 === null) ||
         (this.state.year1 === "" && this.state.year2 === "")
       ? alert("Please select a year interval!")
-      : this.props.onGetMyCountry(code.id, this.state.year1, this.state.year2);
-        console.log(this.state.year1)
-        console.log(this.state.year2)
+      : this.props.onGetCountryInput(
+          code.id,
+          this.state.year1,
+          this.state.year2
+        );
   };
   getValueYear1 = e => {
     this.setState({
@@ -109,7 +110,6 @@ class IntervalOfYears extends Component {
     this.setState(prevState => ({
       showPopulationSpline: !prevState.showPopulationSpline
     }));
-    console.log(this.state.showPopulationSpline);
   };
 
   render() {
@@ -121,14 +121,6 @@ class IntervalOfYears extends Component {
       value,
       onChange: this.onChange
     };
-
-    const year = this.props.years.map((year, index) => {
-      return (
-        <option key={index} value={year}>
-          {year}
-        </option>
-      );
-    });
 
     let options = {
       animationEnabled: true,
@@ -160,22 +152,16 @@ class IntervalOfYears extends Component {
       ]
     };
 
-    // console.log(this.props.populationData);
     if (this.props.emissionsData) {
       this.props.emissionsData.forEach(emissionsData => {
-        console.log(emissionsData);
         options.data[1].dataPoints.push(emissionsData);
       });
-   
-      
     }
     if (this.state.showPopulationSpline) {
       this.props.populationData.forEach(countryPopulation => {
-        console.log(countryPopulation);
         options.data[0].dataPoints.push(countryPopulation);
       });
     }
-    // console.log(options)
 
     return (
       <div className={styles.Wrapper}>
@@ -187,29 +173,14 @@ class IntervalOfYears extends Component {
           renderSuggestion={this.renderSuggestion}
           inputProps={inputProps}
         />
-        <select onChange={this.getValueYear1}><option value="">Year</option>{year}</select> -
-        <select onChange={this.getValueYear2}><option value="">Year</option>{year}</select>
-        <button type="button" onClick={this.getCountryCode}>
-          Search
-        </button>
-        <div className={styles.Chart}>
-          {this.props.visible === true ? (
-           <div>
-           <input
-             onChange={this.showPopulation}
-             type="checkbox"
-             name="checkbox"
-             id="checkbox_id"
-             value="value"
-           />
-           <label htmlFor="checkbox_id">Show population</label>
-           <CanvasJSReact.CanvasJSChart
-             options={options}
-             /* onRef = {ref => this.chart = ref} */
-           />
-         </div>
-          ) : null}
-        </div>
+        <YearPicker selected={this.getValueYear1} years={this.props.years} /> -
+        <YearPicker selected={this.getValueYear2} years={this.props.years} />
+        <SearchButton clicked={this.getCountryCode} />
+          <Graph
+            showPopulation={this.showPopulation}
+            visible={this.props.visible}
+            options={options}
+          />
       </div>
     );
   }
@@ -226,7 +197,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetMyCountry:(country, year1, year2) => dispatch(actionsNearMe.getMyCountry(country, year1, year2) ),
+    onGetCountryInput: (country, year1, year2) =>
+      dispatch(actionsNearMe.getCountryInput(country, year1, year2)),
     onGetAllCountries: () => dispatch(actions.getAllCountries())
   };
 };

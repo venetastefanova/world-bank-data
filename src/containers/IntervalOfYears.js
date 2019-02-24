@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-
 import { withRouter } from "react-router-dom";
-import * as actions from "../store/actions/actions";
-import styles from "./BiggestEmitters/BiggestEmitters.module.css";
-
-import * as actionsIntervalOfYears from "../store/actions/IntervalOfYears";
 import { connect } from "react-redux";
+//components and actions imports
+import styles from "./BiggestEmitters/BiggestEmitters.module.css";
+import * as actions from "../store/actions/actions";
+import * as actionsIntervalOfYears from "../store/actions/IntervalOfYears";
 import Autosuggest from "react-autosuggest";
-import CanvasJSReact from "../canvasjs.react";
+import YearPicker from "../components/YearPicker";
+import SearchButton from "../components/SearchButton";
+import Graph from "../components/Graph";
 
 class IntervalOfYears extends Component {
   state = {
@@ -19,6 +20,11 @@ class IntervalOfYears extends Component {
     countryCode: "",
     visible: false
   };
+
+  componentDidMount() {
+    this.props.onGetAllCountries();
+  }
+
   //gets the input and trims it
   getSuggestions = value => {
     const inputValue = value.trim().toLowerCase();
@@ -63,11 +69,6 @@ class IntervalOfYears extends Component {
       suggestions: []
     });
   };
-
-  componentDidMount() {
-    this.props.onGetAllCountries();
-    console.log(this.props.years);
-  }
 
   getCountryCode = () => {
     const code = this.props.allCountries.find(
@@ -116,14 +117,6 @@ class IntervalOfYears extends Component {
       onChange: this.onChange
     };
 
-    const year = this.props.years.map((year, index) => {
-      return (
-        <option key={index} value={year}>
-          {year}
-        </option>
-      );
-    });
-
     let options = {
       animationEnabled: true,
       title: {
@@ -132,7 +125,7 @@ class IntervalOfYears extends Component {
         } and ${this.state.year2}`
       },
       axisY: {
-        title: "Number of Customers",
+        title: "Value of Emissions and Population",
         includeZero: true
       },
       toolTip: {
@@ -154,18 +147,14 @@ class IntervalOfYears extends Component {
       ]
     };
 
-    console.log(this.props.populationData);
     if (this.props.populationData && this.props.emissionsData) {
       this.props.populationData.forEach(countryPopulation => {
-        console.log(countryPopulation);
         options.data[0].dataPoints.push(countryPopulation);
       });
       this.props.emissionsData.forEach(emissionsData => {
-        console.log(emissionsData);
         options.data[1].dataPoints.push(emissionsData);
       });
     }
-    // console.log(options)
 
     return (
       <div className={styles.Wrapper}>
@@ -177,19 +166,10 @@ class IntervalOfYears extends Component {
           renderSuggestion={this.renderSuggestion}
           inputProps={inputProps}
         />
-        <select onChange={this.getValueYear1}><option value="">Year</option>{year}</select> -
-        <select onChange={this.getValueYear2}><option value="">Year</option>{year}</select>
-        <button type="button" onClick={this.getCountryCode}>
-          Search
-        </button>
-        <div className={styles.Chart}>
-          {this.props.visible === true ? (
-            <CanvasJSReact.CanvasJSChart
-              options={options}
-              /* onRef = {ref => this.chart = ref} */
-            />
-          ) : null}
-        </div>
+        <YearPicker selected={this.getValueYear1} years={this.props.years} /> -{" "}
+        <YearPicker selected={this.getValueYear2} years={this.props.years} />
+        <SearchButton clicked={this.getCountryCode} />
+        <Graph visible={this.props.visible} options={options} />
       </div>
     );
   }

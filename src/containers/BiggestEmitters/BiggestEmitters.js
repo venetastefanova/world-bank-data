@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import styles from "./BiggestEmitters.module.css";
-
 import { withRouter } from "react-router-dom";
-import * as actionsEmitters from "../../store/actions/BiggestEmitters";
 import { connect } from "react-redux";
+//components and actions imports
+import styles from "./BiggestEmitters.module.css";
+import * as actionsEmitters from "../../store/actions/BiggestEmitters";
 import CanvasJSReact from "../../canvasjs.react";
+import SearchButton from '../../components/SearchButton';
+import YearPicker from '../../components/YearPicker';
 
 class BiggestEmitters extends Component {
   state = {
@@ -34,16 +36,8 @@ class BiggestEmitters extends Component {
     this.setState(prevState => ({
       showPopulationSpline: !prevState.showPopulationSpline
     }));
-    console.log(this.state.showPopulationSpline);
   };
   render() {
-    const year = this.props.years.map((year, index) => {
-      return (
-        <option key={index} value={year}>
-          {year}
-        </option>
-      );
-    });
 
     let options = {
       animationEnabled: true,
@@ -73,7 +67,7 @@ class BiggestEmitters extends Component {
       ]
     };
 
-    if (this.props.emissions && this.props.populations) {
+    if(this.props.emissions && this.props.populations) {
       let result = [];
       var test = this.props.populations;
       this.props.emissions.forEach(function(element) {
@@ -111,17 +105,8 @@ class BiggestEmitters extends Component {
     }
     return (
       <div className={styles.Wrapper}>
-        <div>
-          <select onChange={this.getYearValue}>
-            <option value="">Year</option>
-            {year}
-          </select>
-        </div>
-        <div>
-          <button type="button" onClick={this.getData}>
-            Search
-          </button>
-        </div>
+        <YearPicker selected={this.getYearValue} years={this.props.years} />
+        <SearchButton clicked={this.getData}/>
         <div className={styles.Chart}>
           {this.props.visible === true ? (
             <div>
@@ -129,13 +114,12 @@ class BiggestEmitters extends Component {
                 onChange={this.showPopulation}
                 type="checkbox"
                 name="checkbox"
-                id="checkbox_id"
+                id="showPopulation"
                 value="value"
               />
-              <label htmlFor="checkbox_id">Show population</label>
+              <label htmlFor="showPopulation">Show population</label>
               <CanvasJSReact.CanvasJSChart
                 options={options}
-                /* onRef = {ref => this.chart = ref} */
               />
             </div>
           ) : null}

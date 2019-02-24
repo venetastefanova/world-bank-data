@@ -23,16 +23,9 @@ export const fetchDataFail = () => {
 
 export const getCountryDataForIntervalYears = (country, year1, year2) => {
   return dispatch => {
-    // get population
-    axios
-      .get(
-        `https://api.worldbank.org/v2/country/${country}/indicator/SP.POP.TOTL?format=json&date=${year1}:${year2}`
-      )
+    // get population data for period of time
+    axios.get(`https://api.worldbank.org/v2/country/${country}/indicator/SP.POP.TOTL?format=json&date=${year1}:${year2}`)
       .then(response => {
-        // console.log("yes woho")
-        // console.log(country)
-        // console.log(year1,year2)
-        // console.log(response.data[1]);
         let populationForTheIntervalYears = [];
         response.data[1].forEach(res => {
           populationForTheIntervalYears.push({
@@ -45,11 +38,8 @@ export const getCountryDataForIntervalYears = (country, year1, year2) => {
       .catch(error => {
         dispatch(fetchDataFail());
       });
-    //get emissions
-    axios
-      .get(
-        `https://api.worldbank.org/v2/country/${country}/indicator/EN.ATM.CO2E.KT?format=json&date=${year1}:${year2}`
-      )
+    //get emissions data for period of time
+    axios.get(`https://api.worldbank.org/v2/country/${country}/indicator/EN.ATM.CO2E.KT?format=json&date=${year1}:${year2}`)
       .then(response => {
         let emissionsForTheIntervalYears = [];
         response.data[1].forEach(res => {
