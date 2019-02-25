@@ -53,6 +53,7 @@
   width: 30px;
 }
 .Wrapper {
+  z-index: 9999;
   height: 100px;
   background-color: #242730;
   position: fixed;
@@ -122,7 +123,7 @@
     font-size: 16px;
     padding: 10px;
   }
-  .Active{
-    margin-left:0;
+  .Active {
+    margin-left: 0;
   }
 }

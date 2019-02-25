@@ -129,7 +129,7 @@ class IntervalOfYears extends Component {
         } and ${this.state.year2}`
       },
       axisY: {
-        title: "Value of Emissions and Population",
+        title: "Value of Emissions & Population",
         includeZero: true
       },
       toolTip: {

@@ -1,7 +1,13 @@
 .Wrapper {
-    width:50%;
+  width: 50%;
 }
 
-.Wrapper > div{
-    margin:20px 0;
+.Wrapper > div {
+  margin: 20px 0;
+}
+@media (max-width: 500px) {
+  .Wrapper {
+    margin: 10vh 0;
+    width: 100%;
+  }
 }

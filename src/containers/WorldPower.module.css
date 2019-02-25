@@ -1,6 +1,18 @@
-.Wrapper{
-    width:60%;
+.Wrapper {
+  width: 60%;
 }
-.Wrapper>div {
-    margin:20px 0;
+.Wrapper > div {
+  margin: 20px 0;
+}
+@media (max-width: 500px) {
+  .Wrapper {
+    margin: 10vh 0;
+    width: 100%;
+  }
+  .Wrapper p {
+    padding: 0 20px;
+  }
+  #canvasjs-react-chart-container-1 button {
+    display: none;
+  }
 }
