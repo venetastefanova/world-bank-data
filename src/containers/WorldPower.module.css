@@ -1,0 +1,6 @@
+.Wrapper{
+    width:60%;
+}
+.Wrapper>div {
+    margin:20px 0;
+}

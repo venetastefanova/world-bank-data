@@ -9,7 +9,7 @@ export default class Result extends Component {
                                 : "sorry, we do not have this information"}</p>
             : null}   
         {this.props.emissionsData !== null && this.props.populationData !== null 
-            ? <p>Carbon dioxite emissions: {this.props.emissionsData[0].value !== null 
+            ? <p>Carbon dioxide emissions: {this.props.emissionsData[0].value !== null 
                                 ? this.props.emissionsData[0].value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 
                                 : "sorry, we do not have this information"}</p>
             : null}       

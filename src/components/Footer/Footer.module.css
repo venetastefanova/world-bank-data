@@ -1,0 +1,25 @@
+.Wrapper {
+    height: 100px;
+    background-color: #242730;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    color: white;
+    font-family: Lato, Sans-serif;
+    justify-content: space-around;
+    height: 10%;
+  }
+  
+  .Logo {
+    height: 50px;
+    width: 110px;
+  }
+  
+  .Linkedin {
+    height: 35px;
+    width: 35px;
+  }
+  

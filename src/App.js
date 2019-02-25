@@ -1,32 +1,51 @@
 import React, { Component } from "react";
 import "./App.css";
 import { Switch, Route, withRouter } from "react-router-dom";
-import Filter from "./containers/Filter";
+import Filter from "./containers/Filter/Filter";
 import BiggestEmitters from "./containers/BiggestEmitters/BiggestEmitters";
 import IntervalOfYears from "./containers/IntervalOfYears";
-import NearMe from "./containers/NearMe";
+import NearMe from "./containers/NearMe/NearMe";
 import WorldPower from "./containers/WorldPower";
 
 import { connect } from "react-redux";
 import * as actions from "./store/actions/actions";
+import Footer from './components/Footer/Footer';
+import Navigation from './components/Navigation/Navigation';
+import Home from './components/Home/Home';
+import Spinner from './components/Spinner/Spinner';
 
 class App extends Component {
+  state={
+    loading:false
+  }
   componentDidMount() {
     this.props.onGetAllYears();
+    this.setState(prevState => ({
+      loading: !prevState.loading
+    }));
   }
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
+      {this.state.loading 
+      ? 
+      <div>
+        <Navigation/>
+        <div className="App-header">
           <Switch>
             <Route path="/world-power" render={(props) => <WorldPower {...props} years={this.props.years} />}/>
             <Route path="/near-me" render={(props) => <NearMe {...props} years={this.props.years} />}/>
             <Route path="/interval-of-years" render={(props) => <IntervalOfYears {...props} years={this.props.years} />}/>
             <Route path="/biggest-emitters" render={(props) => <BiggestEmitters {...props} years={this.props.years} />}/>
-            <Route exact path="/" render={(props) => <Filter {...props} years={this.props.years} />}/>
+            <Route path="/single-country-data" render={(props) => <Filter {...props} years={this.props.years} />}/>
+            <Route exact path="/" component={Home}/>
           </Switch>
-        </header>
+        </div>
+        <Footer/>
+
+      </div>: <Spinner/>}
+        
       </div>
     );
   }

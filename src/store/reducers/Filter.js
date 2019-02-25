@@ -30,6 +30,14 @@ const reducer = (state = initialState, action) => {
         ...state,
         years: action.years
       };
+    case actionTypes.RESET_STATE:
+      return {
+        ...state,
+        allCountries: [],
+        currentPopulationData: null,
+        currentEmissionsData: null,
+        biggestEmitters: []
+      };
     default:
       return state;
   }

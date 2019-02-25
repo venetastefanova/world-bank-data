@@ -13,6 +13,12 @@ const reducer = (state = initialState, action) => {
         emissionsData: action.emissionsData,
         visible: true
       };
+    case actionTypes.RESET_STATE:
+      return {
+        ...state,
+        emissionsData: null,
+        visible: false
+      };
     default:
       return state;
   }

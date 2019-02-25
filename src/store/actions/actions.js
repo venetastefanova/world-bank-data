@@ -97,3 +97,10 @@ export const getAllYears = () => {
       });
   };
 };
+
+
+export const resetReduxState=()=>{
+  return{
+    type:actionTypes.RESET_STATE
+  }
+}

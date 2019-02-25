@@ -1,0 +1,128 @@
+.Logo {
+  height: 50px;
+  width: 110px;
+}
+
+.Navbar {
+  font-size: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+
+.MainNav {
+  list-style-type: none;
+  display: none;
+}
+.NavLinks,
+.Logo {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.MainNav li {
+  text-align: center;
+  margin: 15px auto;
+}
+
+.Logo {
+  display: inline-block;
+  font-size: 22px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.NavbarToggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  color: white;
+  font-size: 24px;
+}
+
+.Active {
+  display: flex;
+  margin-right: 30px;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-left: 10px;
+  list-style-type: none;
+}
+.MenuIcon {
+  height: 30px;
+  width: 30px;
+}
+.Wrapper {
+  height: 100px;
+  background-color: #242730;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  color: white;
+  font-family: Lato, Sans-serif;
+  justify-content: space-around;
+  height: auto;
+}
+
+@media screen and (min-width: 768px) {
+  .Wrapper {
+    height: 100px;
+    background-color: #242730;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    color: white;
+    font-family: Lato, Sans-serif;
+    justify-content: space-around;
+    height: 10%;
+  }
+
+  .Navbar {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 0;
+    height: 70px;
+    align-items: center;
+  }
+
+  .MainNav {
+    display: flex;
+    margin-right: 30px;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .MainNav li {
+    margin: 0;
+  }
+
+  .NavLinks {
+    margin-left: 40px;
+  }
+  .NavbarToggle {
+    display: none;
+  }
+  .Active {
+    flex-direction: row;
+  }
+  .Logo:hover,
+  .NavLinks:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+}
+
+@media (max-width: 768px) {
+  ul li {
+    font-size: 16px;
+    padding: 10px;
+  }
+  .Active{
+    margin-left:0;
+  }
+}

@@ -3,7 +3,6 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
   pointer-events: none;
 }
@@ -19,34 +18,14 @@
   color: black
 }
 
-.App-link {
-  color: #61dafb;
+p{
+  font-size:16px;
 }
-/* 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}  */
-
-
 .react-autosuggest__container {
   position: relative;
 }
 
-.react-autosuggest__input {
-  width: 240px;
-  height: 30px;
-  padding: 10px 20px;
-  font-family: Helvetica, sans-serif;
-  font-weight: 300;
-  font-size: 16px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-}
+
 
 .react-autosuggest__input:focus {
   outline: none;
@@ -118,3 +97,10 @@ text-align:left;
 .react-autosuggest__suggestion--focused .highlight {
   color: #120000;
 }
+
+
+@media (max-width: 991px) {  
+  .react-autosuggest__input {
+    width: 80%;
+  }
+} 

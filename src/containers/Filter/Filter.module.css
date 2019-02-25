@@ -1,0 +1,59 @@
+.Wrapper {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  flex-direction: column;
+  width:20%;
+}
+.Division {
+  flex: 1;
+}
+
+.Criteria {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 20px;
+}
+
+select {
+  height: 40px;
+}
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+}
+button:hover {
+  cursor: pointer;
+  background-color: #9604ff;
+  color: white;
+}
+p {
+  font-size: 16px;
+}
+input[type=text]{
+  width: 90%;
+  height: 30px;
+  padding: 10px 20px;
+  font-family: Open Sans, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  -webkit-appearance: none;
+}
+
+
+@media (max-width: 991px) {
+  .Wrapper {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 90%;
+    text-align: center;
+  }
+  .Division {
+    padding: 30px;
+  }
+}

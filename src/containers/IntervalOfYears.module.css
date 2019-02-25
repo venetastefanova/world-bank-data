@@ -1,0 +1,19 @@
+.Criteria {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px 0;
+}
+@media (max-width: 991px) {
+  .Wrapper {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 70%;
+    text-align: center;
+  }
+  .Division {
+    padding: 30px;
+  }
+}

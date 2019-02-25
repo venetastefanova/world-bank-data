@@ -4,9 +4,10 @@ import { connect } from "react-redux";
 //components and actions imports
 import styles from "./BiggestEmitters.module.css";
 import * as actionsEmitters from "../../store/actions/BiggestEmitters";
-import CanvasJSReact from "../../canvasjs.react";
-import SearchButton from '../../components/SearchButton';
-import YearPicker from '../../components/YearPicker';
+import * as actions from '../../store/actions/actions';
+import SearchButton from "../../components/SearchButton";
+import YearPicker from "../../components/YearPicker";
+import Graph from "../../components/Graph/Graph";
 
 class BiggestEmitters extends Component {
   state = {
@@ -15,6 +16,9 @@ class BiggestEmitters extends Component {
     result: [],
     showPopulationSpline: false
   };
+  componentWillUnmount(){
+    this.props.onResetState();
+  }
 
   getYearValue = e => {
     this.setState({
@@ -38,7 +42,6 @@ class BiggestEmitters extends Component {
     }));
   };
   render() {
-
     let options = {
       animationEnabled: true,
       title: {
@@ -67,7 +70,7 @@ class BiggestEmitters extends Component {
       ]
     };
 
-    if(this.props.emissions && this.props.populations) {
+    if (this.props.emissions && this.props.populations) {
       let result = [];
       var test = this.props.populations;
       this.props.emissions.forEach(function(element) {
@@ -105,24 +108,15 @@ class BiggestEmitters extends Component {
     }
     return (
       <div className={styles.Wrapper}>
+      <p>Select a year below in order to see which are the top 10 biggest emitters country of carbon dioxide.</p>
         <YearPicker selected={this.getYearValue} years={this.props.years} />
-        <SearchButton clicked={this.getData}/>
-        <div className={styles.Chart}>
-          {this.props.visible === true ? (
-            <div>
-              <input
-                onChange={this.showPopulation}
-                type="checkbox"
-                name="checkbox"
-                id="showPopulation"
-                value="value"
-              />
-              <label htmlFor="showPopulation">Show population</label>
-              <CanvasJSReact.CanvasJSChart
-                options={options}
-              />
-            </div>
-          ) : null}
+        <SearchButton clicked={this.getData} />
+        <div className={styles.Division}>
+          <Graph
+            showPopulation={this.showPopulation}
+            visible={this.props.visible}
+            options={options}
+          />
         </div>
       </div>
     );
@@ -139,7 +133,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetCountries: year => dispatch(actionsEmitters.getData(year))
+    onGetCountries: year => dispatch(actionsEmitters.getData(year)),
+    onResetState: () => dispatch(actions.resetReduxState())
   };
 };
 

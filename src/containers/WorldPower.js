@@ -2,17 +2,21 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import styles from "./BiggestEmitters/BiggestEmitters.module.css";
+import styles from "./WorldPower.module.css";
 import * as actionsWorldPower from "../store/actions/WorldPower";
+import * as actions from '../store/actions/actions';
 import YearPicker from "../components/YearPicker";
 import SearchButton from "../components/SearchButton";
-import Graph from '../components/Graph';
+import Graph from "../components/Graph/Graph";
 
 class WorldPower extends Component {
   state = {
     year: "",
     visible: true
   };
+  componentWillUnmount(){
+    this.props.onResetState();
+  }
 
   getWorldPowerCountries = () => {
     !this.state.year
@@ -64,6 +68,7 @@ class WorldPower extends Component {
 
     return (
       <div className={styles.Wrapper}>
+      <p>As USA, China and Russia are being the most powerful countries in the world, you can easily check their carbon dioxide emissions. As a result, you will see what part these countres play compared to the rest of the world. Please select a specific year in order to see the results1</p>
         <YearPicker selected={this.getValue} years={this.props.years} />
         <SearchButton clicked={this.getWorldPowerCountries} />
         <Graph visible={this.props.visible} options={options}/>
@@ -82,7 +87,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetCountries: year => dispatch(actionsWorldPower.getCountries(year))
+    onGetCountries: year => dispatch(actionsWorldPower.getCountries(year)),
+    onResetState: () => dispatch(actions.resetReduxState())
   };
 };
 

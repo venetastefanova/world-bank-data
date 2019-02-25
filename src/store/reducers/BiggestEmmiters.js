@@ -19,6 +19,13 @@ const reducer = (state = initialState, action) => {
         populations: action.populations,
         visible: true
       };
+    case actionTypes.RESET_STATE:
+      return {
+        ...state,
+        visible: false,
+        emissions: [],
+        populations: []
+      };
     default:
       return state;
   }

@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
-import * as actions from "../store/actions/actions";
-import * as actionsNearMe from "../store/actions/NearMe";
-import styles from "./BiggestEmitters/BiggestEmitters.module.css";
+import * as actions from "../../store/actions/actions";
+import * as actionsNearMe from "../../store/actions/NearMe";
 import Autosuggest from "react-autosuggest";
-import YearPicker from "../components/YearPicker";
-import SearchButton from "../components/SearchButton";
-import Graph from "../components/Graph";
+import YearPicker from "../../components/YearPicker";
+import SearchButton from "../../components/SearchButton";
+import Graph from "../../components/Graph/Graph";
+import styles from "./NearMe.module.css";
 
-class IntervalOfYears extends Component {
+class NearMe extends Component {
   state = {
     year1: "",
     year2: "",
@@ -18,9 +18,14 @@ class IntervalOfYears extends Component {
     suggestions: [],
     country: "",
     countryCode: "",
+    region:"",
     visible: false,
     showPopulationSpline: false
   };
+  componentWillUnmount() {
+    this.props.onResetState();
+  }
+
   //gets the input and trims it
   getSuggestions = value => {
     const inputValue = value.trim().toLowerCase();
@@ -74,6 +79,9 @@ class IntervalOfYears extends Component {
     const code = this.props.allCountries.find(
       country => country.name === this.state.value
     );
+    if (code === undefined) {
+      alert("The given input is not valid!");
+    } else {
     //checks if country input is empty
     this.state.value === undefined ||
     this.state.value === null ||
@@ -95,6 +103,7 @@ class IntervalOfYears extends Component {
           this.state.year1,
           this.state.year2
         );
+      }
   };
   getValueYear1 = e => {
     this.setState({
@@ -121,11 +130,10 @@ class IntervalOfYears extends Component {
       value,
       onChange: this.onChange
     };
-
     let options = {
       animationEnabled: true,
       title: {
-        text: `Population vs. Emissions in ${this.state.country} between ${
+        text: `Population vs. Emissions in ${this.props.region} between ${
           this.state.year1
         } and ${this.state.year2}`
       },
@@ -164,23 +172,43 @@ class IntervalOfYears extends Component {
     }
 
     return (
+      
       <div className={styles.Wrapper}>
-        <Autosuggest
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={this.getSuggestionValue}
-          renderSuggestion={this.renderSuggestion}
-          inputProps={inputProps}
-        />
-        <YearPicker selected={this.getValueYear1} years={this.props.years} /> -
-        <YearPicker selected={this.getValueYear2} years={this.props.years} />
-        <SearchButton clicked={this.getCountryCode} />
+        <div className={styles.Division}>
+          <p>
+            Select the country that you live in and the interval of years.
+            <br />
+            The resultlt is about to show you an average data for the specific
+            region your country belongs to.
+          </p>
+          <Autosuggest
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={this.getSuggestionValue}
+            renderSuggestion={this.renderSuggestion}
+            inputProps={inputProps}
+          />
+          <div className={styles.Criteria}>
+            <YearPicker
+              selected={this.getValueYear1}
+              years={this.props.years}
+            />
+            <span>-</span>
+            <YearPicker
+              selected={this.getValueYear2}
+              years={this.props.years}
+            />
+          </div>
+          <SearchButton clicked={this.getCountryCode} />
+        </div>
+        <div className={styles.Division}>
           <Graph
             showPopulation={this.showPopulation}
             visible={this.props.visible}
             options={options}
           />
+        </div>
       </div>
     );
   }
@@ -191,6 +219,7 @@ const mapStateToProps = state => {
     populationData: state.NearMe.populationData,
     emissionsData: state.NearMe.emissionsData,
     allCountries: state.Filter.allCountries,
+    region:state.NearMe.region,
     visible: state.NearMe.visible
   };
 };
@@ -199,7 +228,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onGetCountryInput: (country, year1, year2) =>
       dispatch(actionsNearMe.getCountryInput(country, year1, year2)),
-    onGetAllCountries: () => dispatch(actions.getAllCountries())
+    onGetAllCountries: () => dispatch(actions.getAllCountries()),
+    onResetState: () => dispatch(actions.resetReduxState())
   };
 };
 
@@ -207,5 +237,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(IntervalOfYears)
+  )(NearMe)
 );

@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 //components and actions imports
-import styles from "./BiggestEmitters/BiggestEmitters.module.css";
+import styles from "./IntervalOfYears.module.css";
 import * as actions from "../store/actions/actions";
 import * as actionsIntervalOfYears from "../store/actions/IntervalOfYears";
 import Autosuggest from "react-autosuggest";
 import YearPicker from "../components/YearPicker";
 import SearchButton from "../components/SearchButton";
-import Graph from "../components/Graph";
+import Graph from "../components/Graph/Graph";
 
 class IntervalOfYears extends Component {
   state = {
@@ -74,6 +74,9 @@ class IntervalOfYears extends Component {
     const code = this.props.allCountries.find(
       country => country.name === this.state.value
     );
+    if (code === undefined) {
+      alert("The given input is not valid!");
+    } else {
     //checks if country input is empty
     this.state.value === undefined ||
     this.state.value === null ||
@@ -95,6 +98,7 @@ class IntervalOfYears extends Component {
           this.state.year1,
           this.state.year2
         );
+      }
   };
   getValueYear1 = e => {
     this.setState({
@@ -158,6 +162,9 @@ class IntervalOfYears extends Component {
 
     return (
       <div className={styles.Wrapper}>
+        <p>
+            Check a specific country's situation for specific interval of years.<br/> You can see the relation between population and carbon dioxide emissions.
+          </p>
         <Autosuggest
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -166,8 +173,17 @@ class IntervalOfYears extends Component {
           renderSuggestion={this.renderSuggestion}
           inputProps={inputProps}
         />
-        <YearPicker selected={this.getValueYear1} years={this.props.years} /> -{" "}
-        <YearPicker selected={this.getValueYear2} years={this.props.years} />
+        <div className={styles.Criteria}>
+            <YearPicker
+              selected={this.getValueYear1}
+              years={this.props.years}
+            />
+            <span>-</span>
+            <YearPicker
+              selected={this.getValueYear2}
+              years={this.props.years}
+            />
+          </div>
         <SearchButton clicked={this.getCountryCode} />
         <Graph visible={this.props.visible} options={options} />
       </div>
@@ -194,7 +210,8 @@ const mapDispatchToProps = dispatch => {
           year2
         )
       ),
-    onGetAllCountries: () => dispatch(actions.getAllCountries())
+    onGetAllCountries: () => dispatch(actions.getAllCountries()),
+    onResetState: () => dispatch(actions.resetReduxState())
   };
 };
 

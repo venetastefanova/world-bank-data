@@ -1,5 +1,5 @@
 import React from "react";
-import CanvasJSReact from "../canvasjs.react";
+import CanvasJSReact from "../../canvasjs.react";
 import styles from "./Graph.module.css";
 
 const Graph = props => {
@@ -7,6 +7,7 @@ const Graph = props => {
     <div className={styles.Chart}>
       {props.visible === true ? (
         <div>
+          <CanvasJSReact.CanvasJSChart options={props.options} />
           {props.showPopulation ? (
             <div>
               <input
@@ -19,7 +20,6 @@ const Graph = props => {
               <label htmlFor="checkbox_id">Show population</label>
             </div>
           ) : null}
-          <CanvasJSReact.CanvasJSChart options={props.options} />
         </div>
       ) : null}
     </div>

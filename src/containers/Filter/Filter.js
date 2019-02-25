@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Autosuggest from "react-autosuggest";
 //components and actions imports
-import * as actions from "../store/actions/actions";
-import YearPicker from "../components/YearPicker";
-import SearchButton from "../components/SearchButton";
-import Result from "../components/Result";
+import * as actions from "../../store/actions/actions";
+import YearPicker from "../../components/YearPicker";
+import SearchButton from "../../components/SearchButton";
+import Result from "../../components/Result/Result";
+import styles from "./Filter.module.css";
 
 class Filter extends Component {
   state = {
@@ -17,6 +18,10 @@ class Filter extends Component {
   componentDidMount() {
     this.props.onGetAllCountries();
   }
+  componentWillUnmount(){
+    this.props.onResetState();
+  }
+
   //checks if the input value matches the provided country information
   getSuggestions = value => {
     const inputValue = value.trim().toLowerCase();
@@ -102,22 +107,32 @@ class Filter extends Component {
     };
 
     return (
-      <div>
-        <Autosuggest
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          getSuggestionValue={this.getSuggestionValue}
-          renderSuggestion={this.renderSuggestion}
-          inputProps={inputProps}
-        />
-        <YearPicker selected={this.getYearValue} years={this.props.years} />
-        <SearchButton clicked={this.getCountryCode} />
-        <Result
-          countryName={this.state.value}
-          populationData={this.props.currentPopulationData}
-          emissionsData={this.props.currentEmissionsData}
-        />
+      <div className={styles.Wrapper}>
+        <div className={styles.Division}>
+          <p>
+            You can check specific country's population and its carbon dioxide
+            emissions by using the filtering options below:
+          </p>
+          <Autosuggest
+            suggestions={suggestions}
+            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+            getSuggestionValue={this.getSuggestionValue}
+            renderSuggestion={this.renderSuggestion}
+            inputProps={inputProps}
+          />
+          <div className={styles.Criteria}>
+            <YearPicker selected={this.getYearValue} years={this.props.years} />
+            <SearchButton clicked={this.getCountryCode} />
+          </div>
+        </div>
+        <div className={styles.Division}>
+          <Result
+            countryName={this.state.value}
+            populationData={this.props.currentPopulationData}
+            emissionsData={this.props.currentEmissionsData}
+          />
+        </div>
       </div>
     );
   }
@@ -135,7 +150,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onGetCountryCode: (country, year) =>
       dispatch(actions.getCountry(country, year)),
-    onGetAllCountries: () => dispatch(actions.getAllCountries())
+    onGetAllCountries: () => dispatch(actions.getAllCountries()),
+    onResetState: () => dispatch(actions.resetReduxState())
   };
 };
 
