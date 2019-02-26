@@ -7,7 +7,7 @@ Currently from the app can be seen:
 - Which countries are the largest emitters of carbon dioxide.
 - The carbon dioxide emissions based on the region of the input country.
 - Check a specific country's situation for specific interval of years.
-- The world superpowers countries (USA, China and Russia) and what percentage their emissions are, compared to the rest of the world.
+- The world's superpowers countries (USA, China and Russia) and what percentage their emissions are, compared to the rest of the world.
 
 ### Tools:
 - `React.js`
@@ -19,5 +19,6 @@ Currently from the app can be seen:
 _____
 ### Developer's notes:
 World bank data API was used straight away. As a result, the data is always up to date and the application doesn't require maintenance. 
-Due to that, only the given data in the provided CSV files have been used in the process of development.
+Due to that, only the given data in the provided CSV files has been used in the process of development.
 
+[Check it out here!](https://world-data-bank.herokuapp.com/)

@@ -22,8 +22,7 @@ const Home = () => {
           period of time
         </li>
         <li>
-          Find out what big of a role the world most powerful countries in the
-          world play in the carbon dioxide emissions each year
+          Find out what big of a role the world most powerful countries play in the carbon dioxide emissions each year
         </li>
       </ul>
     </div>
