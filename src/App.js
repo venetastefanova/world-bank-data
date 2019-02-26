@@ -12,24 +12,14 @@ import * as globalActions from "./store/actions/globalActions";
 import Footer from './components/Footer/Footer';
 import Navigation from './components/Navigation/Navigation';
 import Home from './components/Home/Home';
-import Spinner from './components/Spinner/Spinner';
 
 class App extends Component {
-  state={
-    loading:false
-  }
   componentDidMount() {
     this.props.onGetAllYears();
-    this.setState(prevState => ({
-      loading: !prevState.loading
-    }));
   }
-
   render() {
     return (
       <div className="App">
-      {this.state.loading 
-      ? 
       <div>
         <Navigation/>
         <div className="App-header">
@@ -43,7 +33,7 @@ class App extends Component {
           </Switch>
         </div>
         <Footer/>
-      </div>: <Spinner/>}
+      </div>
       </div>
     );
   }
