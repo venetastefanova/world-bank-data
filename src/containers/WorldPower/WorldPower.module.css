@@ -4,9 +4,12 @@
 .Wrapper > div {
   margin: 20px 0;
 }
+i {
+  font-size: 12px;
+}
 @media (max-width: 500px) {
   .Wrapper {
-    margin: 10vh 0;
+    margin: 30% 0;
     width: 100%;
   }
   .Wrapper p {

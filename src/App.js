@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import "./App.css";
 import { Switch, Route, withRouter } from "react-router-dom";
-import Filter from "./containers/Filter/Filter";
+import IndividualCountry from "./containers/IndividualCountry/IndividualCountry";
 import BiggestEmitters from "./containers/BiggestEmitters/BiggestEmitters";
-import IntervalOfYears from "./containers/IntervalOfYears";
+import IntervalOfYears from "./containers/IntervalOfYears/IntervalOfYears";
 import NearMe from "./containers/NearMe/NearMe";
-import WorldPower from "./containers/WorldPower";
+import WorldPower from "./containers/WorldPower/WorldPower";
 
 import { connect } from "react-redux";
 import * as actions from "./store/actions/actions";
@@ -38,7 +38,7 @@ class App extends Component {
             <Route path="/near-me" render={(props) => <NearMe {...props} years={this.props.years} />}/>
             <Route path="/interval-of-years" render={(props) => <IntervalOfYears {...props} years={this.props.years} />}/>
             <Route path="/biggest-emitters" render={(props) => <BiggestEmitters {...props} years={this.props.years} />}/>
-            <Route path="/single-country-data" render={(props) => <Filter {...props} years={this.props.years} />}/>
+            <Route path="/single-country-data" render={(props) => <IndividualCountry {...props} years={this.props.years} />}/>
             <Route exact path="/" component={Home}/>
           </Switch>
         </div>

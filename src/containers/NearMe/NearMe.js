@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-
+//components and actions imports
 import * as actions from "../../store/actions/actions";
 import * as actionsNearMe from "../../store/actions/NearMe";
 import Autosuggest from "react-autosuggest";
-import YearPicker from "../../components/YearPicker";
-import SearchButton from "../../components/SearchButton";
+import YearPicker from "../../components/YearPicker/YearPicker";
+import SearchButton from "../../components/SearchButton/SearchButton";
 import Graph from "../../components/Graph/Graph";
 import styles from "./NearMe.module.css";
 
@@ -18,7 +18,7 @@ class NearMe extends Component {
     suggestions: [],
     country: "",
     countryCode: "",
-    region:"",
+    region: "",
     visible: false,
     showPopulationSpline: false
   };
@@ -26,7 +26,6 @@ class NearMe extends Component {
     this.props.onResetState();
   }
 
-  //gets the input and trims it
   getSuggestions = value => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
@@ -56,15 +55,14 @@ class NearMe extends Component {
     });
   };
 
-  // Autosuggest will call this function every time you need to update suggestions.
-  // You already implemented this logic above, so just use it.
+  // updates the suggestions
   onSuggestionsFetchRequested = ({ value }) => {
     this.setState({
       suggestions: this.getSuggestions(value)
     });
   };
 
-  // Autosuggest will call this function every time you need to clear suggestions.
+  // clear suggestions
   onSuggestionsClearRequested = () => {
     this.setState({
       suggestions: []
@@ -75,6 +73,7 @@ class NearMe extends Component {
     this.props.onGetAllCountries();
   }
 
+  //validates the data and sends it to redux
   getCountryCode = () => {
     const code = this.props.allCountries.find(
       country => country.name === this.state.value
@@ -82,28 +81,31 @@ class NearMe extends Component {
     if (code === undefined) {
       alert("The given input is not valid!");
     } else {
-    //checks if country input is empty
-    this.state.value === undefined ||
-    this.state.value === null ||
-    this.state.value === ""
-      ? alert("Please select a country!")
-      : this.setState({
-          countryCode: code.id,
-          country: code.name
-        });
-    //cheks if start year value is smaller
-    this.state.year1 > this.state.year2
-      ? alert("Second year value should be bigger than the first") //checks if years are empty
-      : (this.state.year1 === undefined && this.state.year2 === undefined) ||
-        (this.state.year1 === null && this.state.year2 === null) ||
-        (this.state.year1 === "" && this.state.year2 === "")
-      ? alert("Please select a year interval!")
-      : this.props.onGetCountryInput(
-          code.id,
-          this.state.year1,
-          this.state.year2
-        );
-      }
+      //checks if country input is empty
+      this.state.value === undefined ||
+      this.state.value === null ||
+      this.state.value === ""
+        ? alert("Please select a country!")
+        : this.setState({
+            countryCode: code.id,
+            country: code.name
+          });
+      //cheks if start year value is smaller
+      this.state.year1 > this.state.year2
+        ? alert("Second year value should be bigger than the first") //checks if years are empty
+        : (this.state.year1 === undefined && this.state.year2 === undefined) ||
+          (this.state.year1 === null && this.state.year2 === null) ||
+          (this.state.year1 === "" && this.state.year2 === "") ||
+          (this.state.year1 === undefined || this.state.year2 === undefined) ||
+          (this.state.year1 === null || this.state.year2 === null) ||
+          (this.state.year1 === "" || this.state.year2 === "")
+        ? alert("Please select a year interval!")
+        : this.props.onGetCountryInput(
+            code.id,
+            this.state.year1,
+            this.state.year2
+          );
+    }
   };
   getValueYear1 = e => {
     this.setState({
@@ -115,6 +117,7 @@ class NearMe extends Component {
       year2: e.target.value
     });
   };
+  //show or hide the population spline
   showPopulation = e => {
     this.setState(prevState => ({
       showPopulationSpline: !prevState.showPopulationSpline
@@ -160,6 +163,7 @@ class NearMe extends Component {
       ]
     };
 
+    //map data after props are received
     if (this.props.emissionsData) {
       this.props.emissionsData.forEach(emissionsData => {
         options.data[1].dataPoints.push(emissionsData);
@@ -172,7 +176,6 @@ class NearMe extends Component {
     }
 
     return (
-      
       <div className={styles.Wrapper}>
         <div className={styles.Division}>
           <p>
@@ -180,6 +183,12 @@ class NearMe extends Component {
             <br />
             The resultlt is about to show you an average data for the specific
             region your country belongs to.
+            <br />
+            <br />
+            <i>
+              <b>Note</b>: Results showing 0 as a value are assumed as such, due
+              to the lack of information given for the specific year.
+            </i>
           </p>
           <Autosuggest
             suggestions={suggestions}
@@ -219,7 +228,7 @@ const mapStateToProps = state => {
     populationData: state.NearMe.populationData,
     emissionsData: state.NearMe.emissionsData,
     allCountries: state.Filter.allCountries,
-    region:state.NearMe.region,
+    region: state.NearMe.region,
     visible: state.NearMe.visible
   };
 };

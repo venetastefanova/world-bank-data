@@ -25,7 +25,9 @@ p{
   position: relative;
 }
 
-
+label{
+  font-size:16px;
+}
 
 .react-autosuggest__input:focus {
   outline: none;

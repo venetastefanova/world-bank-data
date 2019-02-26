@@ -37,10 +37,19 @@ export const getCountries = year => {
           );
         }).forEach(countryData=>{
           //calculate the emission percentage compared to global of each of the powerful countries 
-          worldPowerfulCountriesData.push({
-            y: Math.round((countryData.value / totalEmissionsValue) *100),
-            label:countryData.country.value
-          })
+          if(countryData.value===null){
+            worldPowerfulCountriesData.push({
+              y: 0,
+              label:countryData.country.value
+            })
+          }
+          else{
+            worldPowerfulCountriesData.push({
+              y: Math.round((countryData.value / totalEmissionsValue) *100),
+              label:countryData.country.value
+            })
+          }
+         
         })
         //get the rest of the world data and send it all to redux
         let restOfTheWorld = worldPowerfulCountriesData.reduce(function(prev, next) {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styles from "./Navigation.module.css";
 import NavigationBars from "../../bars.svg";
 
@@ -28,38 +28,38 @@ class Navigation extends Component {
             />
           </span>
           <span href="#" className={styles.Logo}>
-            logo
+            Reaktor
           </span>
           <ul className={this.state.opened ? styles.Active : styles.MainNav}>
             <li>
-              <Link to={"/"} className={styles.NavLinks}>
+              <NavLink to={"/"} exact activeClassName={styles.ActiveButton} className={styles.NavLinks}>
                 Home
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to={"/single-country-data"} className={styles.NavLinks}>
+              <NavLink to={"/single-country-data"} activeClassName={styles.ActiveButton}  className={styles.NavLinks}>
                 Individual country
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to={"/near-me"} className={styles.NavLinks}>
+              <NavLink to={"/near-me"} activeClassName={styles.ActiveButton} className={styles.NavLinks}>
                 Near me
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to={"/biggest-emitters"} className={styles.NavLinks}>
+              <NavLink to={"/biggest-emitters"} activeClassName={styles.ActiveButton}  className={styles.NavLinks}>
                 Biggest emitters
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to={"/world-power"} className={styles.NavLinks}>
+              <NavLink to={"/world-power"} activeClassName={styles.ActiveButton} className={styles.NavLinks}>
                 World's superpowers
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link to={"/interval-of-years"} className={styles.NavLinks}>
+              <NavLink to={"/interval-of-years"} activeClassName={styles.ActiveButton}  className={styles.NavLinks}>
                 Interval of years
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </nav>

@@ -5,9 +5,10 @@
 .Wrapper > div {
   margin: 20px 0;
 }
+
 @media (max-width: 500px) {
   .Wrapper {
-    margin: 10vh 0;
+    margin: 30% 0;
     width: 100%;
   }
 }

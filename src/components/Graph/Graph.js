@@ -1,5 +1,5 @@
 import React from "react";
-import CanvasJSReact from "../../canvasjs.react";
+import CanvasJSReact from "../../CanvasJS/canvasjs.react";
 import styles from "./Graph.module.css";
 
 const Graph = props => {

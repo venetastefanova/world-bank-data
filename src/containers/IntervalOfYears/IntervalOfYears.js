@@ -3,12 +3,12 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 //components and actions imports
 import styles from "./IntervalOfYears.module.css";
-import * as actions from "../store/actions/actions";
-import * as actionsIntervalOfYears from "../store/actions/IntervalOfYears";
+import * as actions from "../../store/actions/actions";
+import * as actionsIntervalOfYears from "../../store/actions/IntervalOfYears";
 import Autosuggest from "react-autosuggest";
-import YearPicker from "../components/YearPicker";
-import SearchButton from "../components/SearchButton";
-import Graph from "../components/Graph/Graph";
+import YearPicker from "../../components/YearPicker/YearPicker";
+import SearchButton from "../../components/SearchButton/SearchButton";
+import Graph from "../../components/Graph/Graph";
 
 class IntervalOfYears extends Component {
   state = {
@@ -55,21 +55,21 @@ class IntervalOfYears extends Component {
     });
   };
 
-  // Autosuggest will call this function every time you need to update suggestions.
-  // You already implemented this logic above, so just use it.
+  // updates the suggestions
   onSuggestionsFetchRequested = ({ value }) => {
     this.setState({
       suggestions: this.getSuggestions(value)
     });
   };
 
-  // Autosuggest will call this function every time you need to clear suggestions.
+  // clear suggestions
   onSuggestionsClearRequested = () => {
     this.setState({
       suggestions: []
     });
   };
 
+  //validates the data and sends it to redux
   getCountryCode = () => {
     const code = this.props.allCountries.find(
       country => country.name === this.state.value
@@ -77,28 +77,32 @@ class IntervalOfYears extends Component {
     if (code === undefined) {
       alert("The given input is not valid!");
     } else {
-    //checks if country input is empty
-    this.state.value === undefined ||
-    this.state.value === null ||
-    this.state.value === ""
-      ? alert("Please select a country!")
-      : this.setState({
-          countryCode: code.id,
-          country: code.name
-        });
-    //cheks if start year value is smaller
-    this.state.year1 > this.state.year2
-      ? alert("Second year value should be bigger than the first") //checks if years are empty
-      : (this.state.year1 === undefined && this.state.year2 === undefined) ||
-        (this.state.year1 === null && this.state.year2 === null) ||
-        (this.state.year1 === "" && this.state.year2 === "")
-      ? alert("Please select a year interval!")
-      : this.props.onGetCountryDataForIntervalYears(
-          code.id,
-          this.state.year1,
-          this.state.year2
-        );
-      }
+      //checks if country input is empty
+      this.state.value === undefined ||
+      this.state.value === null ||
+      this.state.value === ""
+        ? alert("Please select a country!")
+        : this.setState({
+            countryCode: code.id,
+            country: code.name
+          });
+
+      //cheks if start year value is smaller
+      this.state.year1 > this.state.year2
+        ? alert("Second year value should be bigger than the first") //checks if years are empty
+        : (this.state.year1 === undefined && this.state.year2 === undefined) ||
+          (this.state.year1 === null && this.state.year2 === null) ||
+          (this.state.year1 === "" && this.state.year2 === "") ||
+          (this.state.year1 === undefined || this.state.year2 === undefined) ||
+          (this.state.year1 === null || this.state.year2 === null) ||
+          (this.state.year1 === "" || this.state.year2 === "")
+        ? alert("Please select a year interval!")
+        : this.props.onGetCountryDataForIntervalYears(
+            code.id,
+            this.state.year1,
+            this.state.year2
+          );
+    }
   };
   getValueYear1 = e => {
     this.setState({
@@ -163,8 +167,16 @@ class IntervalOfYears extends Component {
     return (
       <div className={styles.Wrapper}>
         <p>
-            Check a specific country's situation for specific interval of years.<br/> You can see the relation between population and carbon dioxide emissions.
-          </p>
+          Check a specific country's situation for specific interval of years.
+          <br /> You can see the relation between population and carbon dioxide
+          emissions.
+          <br />
+          <br />
+          <i>
+            <b>Note</b>: Results showing 0 as a value are assumed as such, due
+            to the lack of information given for the specific year.
+          </i>
+        </p>
         <Autosuggest
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -174,16 +186,10 @@ class IntervalOfYears extends Component {
           inputProps={inputProps}
         />
         <div className={styles.Criteria}>
-            <YearPicker
-              selected={this.getValueYear1}
-              years={this.props.years}
-            />
-            <span>-</span>
-            <YearPicker
-              selected={this.getValueYear2}
-              years={this.props.years}
-            />
-          </div>
+          <YearPicker selected={this.getValueYear1} years={this.props.years} />
+          <span>-</span>
+          <YearPicker selected={this.getValueYear2} years={this.props.years} />
+        </div>
         <SearchButton clicked={this.getCountryCode} />
         <Graph visible={this.props.visible} options={options} />
       </div>

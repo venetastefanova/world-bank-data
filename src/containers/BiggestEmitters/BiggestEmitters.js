@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 //components and actions imports
-import styles from "./BiggestEmitters.module.css";
 import * as actionsEmitters from "../../store/actions/BiggestEmitters";
-import * as actions from '../../store/actions/actions';
-import SearchButton from "../../components/SearchButton";
-import YearPicker from "../../components/YearPicker";
+import * as actions from "../../store/actions/actions";
+import styles from "./BiggestEmitters.module.css";
+import SearchButton from "../../components/SearchButton/SearchButton";
+import YearPicker from "../../components/YearPicker/YearPicker";
 import Graph from "../../components/Graph/Graph";
 
 class BiggestEmitters extends Component {
@@ -16,7 +16,7 @@ class BiggestEmitters extends Component {
     result: [],
     showPopulationSpline: false
   };
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.onResetState();
   }
 
@@ -28,7 +28,7 @@ class BiggestEmitters extends Component {
 
   getData = () => {
     !this.state.year
-      ? alert("Please select a year!") //checks if years are empty
+      ? alert("Please select a year!") //checks if year is empty
       : this.state.year === undefined ||
         this.state.year === null ||
         this.state.year === ""
@@ -36,6 +36,7 @@ class BiggestEmitters extends Component {
       : this.props.onGetCountries(this.state.year);
   };
 
+  //show population spline
   showPopulation = e => {
     this.setState(prevState => ({
       showPopulationSpline: !prevState.showPopulationSpline
@@ -70,6 +71,7 @@ class BiggestEmitters extends Component {
       ]
     };
 
+    //only if data is returned to redux, populate the data
     if (this.props.emissions && this.props.populations) {
       let result = [];
       var test = this.props.populations;
@@ -108,7 +110,16 @@ class BiggestEmitters extends Component {
     }
     return (
       <div className={styles.Wrapper}>
-      <p>Select a year below in order to see which are the top 10 biggest emitters country of carbon dioxide.</p>
+        <p>
+          Select a year below in order to see which are the top 10 biggest
+          emitters country of carbon dioxide.
+          <br />
+          <br />
+          <i>
+            <b>Note</b>: Results showing 0 as a value are assumed as such, due
+            to the lack of information given for the specific year.
+          </i>
+        </p>
         <YearPicker selected={this.getYearValue} years={this.props.years} />
         <SearchButton clicked={this.getData} />
         <div className={styles.Division}>

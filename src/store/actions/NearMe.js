@@ -23,7 +23,10 @@ export const fetchDataFail = () => {
 export const getCountryInput = (country, year1, year2) => {
   return dispatch => {
     //get country for the interval of years
-    axios.get(`https://api.worldbank.org/v2/country/${country}?format=json&date=${year1}:${year2}`)
+    axios
+      .get(
+        `https://api.worldbank.org/v2/country/${country}?format=json&date=${year1}:${year2}`
+      )
       .then(response => {
         let regionData = "";
         //get country region
@@ -38,32 +41,59 @@ export const getCountryInput = (country, year1, year2) => {
       })
       .then(regionData => {
         //get the emissions data for the region in the interval of years
-        axios.get(`https://api.worldbank.org/v2/country/${regionData.regionData}/indicator/SP.POP.TOTL?format=json&per_page=1000&date=${year1}:${year2}`)
+        axios
+          .get(
+            `https://api.worldbank.org/v2/country/${
+              regionData.regionData
+            }/indicator/SP.POP.TOTL?format=json&per_page=1000&date=${year1}:${year2}`
+          )
           .then(response => {
             const allCountries = [];
             response.data[1].forEach(res => {
-              allCountries.push({
-                region: res.country.value,
-                y: res.value,
-                label: res.date
-              });
+              if (res.value === null) {
+                allCountries.push({
+                  region: res.country.value,
+                  y: 0,
+                  label: res.date
+                });
+              } else {
+                allCountries.push({
+                  region: res.country.value,
+                  y: res.value,
+                  label: res.date
+                });
+              }
             });
             dispatch(fetchPopulationData(allCountries));
           })
           .catch(error => {
             dispatch(fetchDataFail());
           });
-         //get the population data for the region in the interval of years
-        axios.get(`https://api.worldbank.org/v2/country/${regionData.regionData}/indicator/EN.ATM.CO2E.KT?format=json&per_page=1000&date=${year1}:${year2}`)
+        //get the population data for the region in the interval of years
+        axios
+          .get(
+            `https://api.worldbank.org/v2/country/${
+              regionData.regionData
+            }/indicator/EN.ATM.CO2E.KT?format=json&per_page=1000&date=${year1}:${year2}`
+          )
           .then(response => {
             const allCountries = [];
             response.data[1].forEach(res => {
+              if (res.value === null) {
+              allCountries.push({
+                region: res.country.value,
+                y: 0,
+                label: res.date
+              });
+            }
+            else{
               allCountries.push({
                 region: res.country.value,
                 y: res.value,
                 label: res.date
               });
-            });
+            }
+          });
             dispatch(fetchEmissionsData(allCountries.reverse()));
           })
           .catch(error => {

@@ -18,7 +18,10 @@
   text-decoration: none;
   color: rgba(255, 255, 255, 0.7);
 }
-
+.ActiveButton {
+  text-decoration: underline;
+  font-weight: bold;
+}
 .MainNav li {
   text-align: center;
   margin: 15px auto;

@@ -34,10 +34,18 @@ export const getData = year => {
         let result = [];
         let countriesCode = [];
         getBiggestEmittersFilter.forEach(res => {
-          result.push({
-            label: res.country.value,
-            emissions: res.value
-          });
+          if(res.value===null){
+            result.push({
+              label: res.country.value,
+              emissions:0
+            });
+          } 
+          else{
+            result.push({
+              label: res.country.value,
+              emissions: res.value
+            });
+          }
           countriesCode.push(res.countryiso3code);
         });
         dispatch(getBiggestEmissions(result.slice(0, 10)));
@@ -57,10 +65,19 @@ export const getData = year => {
             );
             // filters the API response with the given countries and returns the matches
             getPopulation.forEach(res => {
-              allCountries.push({
-                label: res.country.value,
-                populations: res.value
-              });
+              if(res.value===null){
+                allCountries.push({
+                  label: res.country.value,
+                  populations: 0
+                });
+              }
+              else{
+                allCountries.push({
+                  label: res.country.value,
+                  populations: res.value
+                });
+              }
+              
             });
             dispatch(getBiggestPopulations(allCountries));
           })

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export default class Result extends Component {
+class Result extends Component {
   render() {
     return <div>
        {this.props.populationData !== null && this.props.emissionsData
@@ -16,3 +16,5 @@ export default class Result extends Component {
         </div>;
   }
 }
+
+export default Result;

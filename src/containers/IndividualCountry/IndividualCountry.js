@@ -3,12 +3,12 @@ import { connect } from "react-redux";
 import Autosuggest from "react-autosuggest";
 //components and actions imports
 import * as actions from "../../store/actions/actions";
-import YearPicker from "../../components/YearPicker";
-import SearchButton from "../../components/SearchButton";
+import YearPicker from "../../components/YearPicker/YearPicker";
+import SearchButton from "../../components/SearchButton/SearchButton";
 import Result from "../../components/Result/Result";
-import styles from "./Filter.module.css";
+import styles from "./IndividualCountry.module.css";
 
-class Filter extends Component {
+class IndividualCountry extends Component {
   state = {
     value: "",
     suggestions: [],
@@ -18,7 +18,7 @@ class Filter extends Component {
   componentDidMount() {
     this.props.onGetAllCountries();
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.onResetState();
   }
 
@@ -50,21 +50,21 @@ class Filter extends Component {
     });
   };
 
-  // Autosuggest will call this function every time you need to update suggestions.
-  // You already implemented this logic above, so just use it.
+  // updates the suggestions
   onSuggestionsFetchRequested = ({ value }) => {
     this.setState({
       suggestions: this.getSuggestions(value)
     });
   };
 
-  // Autosuggest will call this function every time you need to clear suggestions.
+  // clear suggestions
   onSuggestionsClearRequested = () => {
     this.setState({
       suggestions: []
     });
   };
 
+  //validates the input and sends the data to redux
   getCountryCode = () => {
     const code = this.props.allCountries.find(
       country => country.name === this.state.value
@@ -91,6 +91,7 @@ class Filter extends Component {
         : this.props.onGetCountryCode(code.id, this.state.year);
     }
   };
+  //get year selected value
   getYearValue = e => {
     this.setState({
       year: e.target.value
@@ -158,4 +159,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Filter);
+)(IndividualCountry);

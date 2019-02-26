@@ -1,6 +1,6 @@
 .Wrapper {
-    width:50%;
+  width: 50%;
 }
-.Chart .canvasjs-chart-credit{
-    display:none !important;
+.Chart .canvasjs-chart-credit {
+  display: none !important;
 }

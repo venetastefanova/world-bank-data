@@ -28,10 +28,18 @@ export const getCountryDataForIntervalYears = (country, year1, year2) => {
       .then(response => {
         let populationForTheIntervalYears = [];
         response.data[1].forEach(res => {
-          populationForTheIntervalYears.push({
-            y: res.value,
-            label: res.date
-          });
+          if(res.value===null){
+            populationForTheIntervalYears.push({
+              y: 0,
+              label: res.date
+            });
+          }
+          else{
+            populationForTheIntervalYears.push({
+              y: res.value,
+              label: res.date
+            });
+          }
         });
         dispatch(fetchPopulationData(populationForTheIntervalYears.reverse()));
       })
