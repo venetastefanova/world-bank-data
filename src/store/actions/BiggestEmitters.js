@@ -1,4 +1,5 @@
 import * as actionTypes from "./actionTypes";
+import * as globalActions from './globalActions';
 import axios from "axios";
 
 export const getBiggestEmissions = emissions => {
@@ -14,16 +15,14 @@ export const getBiggestPopulations = populations => {
     populations: populations
   };
 };
-export const fetchDataFail = () => {
-  return {
-    type: actionTypes.FETCH_DATA_FAIL
-  };
-};
 
 export const getData = year => {
   return dispatch => {
     //get top 10 bigget emitters countries
-    axios.get(`https://api.worldbank.org/v2/country/all/indicator/EN.ATM.CO2E.KT?format=json&per_page=300&date=${year}`)
+    axios
+      .get(
+        `https://api.worldbank.org/v2/country/all/indicator/EN.ATM.CO2E.KT?format=json&per_page=300&date=${year}`
+      )
       .then(response => {
         const getBiggestEmitters = response.data[1].sort(
           (a, b) => b.value - a.value
@@ -34,13 +33,12 @@ export const getData = year => {
         let result = [];
         let countriesCode = [];
         getBiggestEmittersFilter.forEach(res => {
-          if(res.value===null){
+          if (res.value === null) {
             result.push({
               label: res.country.value,
-              emissions:0
+              emissions: 0
             });
-          } 
-          else{
+          } else {
             result.push({
               label: res.country.value,
               emissions: res.value
@@ -57,7 +55,10 @@ export const getData = year => {
           passedData.push(country);
         });
         //get the biggest emitters countries population
-        axios.get(`https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL?format=json&per_page=300&date=${year}`)
+        axios
+          .get(
+            `https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL?format=json&per_page=300&date=${year}`
+          )
           .then(response => {
             const allCountries = [];
             const getPopulation = response.data[1].filter(country =>
@@ -65,28 +66,26 @@ export const getData = year => {
             );
             // filters the API response with the given countries and returns the matches
             getPopulation.forEach(res => {
-              if(res.value===null){
+              if (res.value === null) {
                 allCountries.push({
                   label: res.country.value,
                   populations: 0
                 });
-              }
-              else{
+              } else {
                 allCountries.push({
                   label: res.country.value,
                   populations: res.value
                 });
               }
-              
             });
             dispatch(getBiggestPopulations(allCountries));
           })
           .catch(error => {
-            dispatch(fetchDataFail());
+            dispatch(globalActions.fetchDataFail(error));
           });
       })
       .catch(error => {
-        dispatch(fetchDataFail());
+        dispatch(globalActions.fetchDataFail(error));
       });
   };
 };

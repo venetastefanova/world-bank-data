@@ -1,16 +1,11 @@
 import * as actionTypes from "./actionTypes";
+import * as globalActions from './globalActions';
 import axios from "axios";
 
 export const fetchEmissionsData = emissionsData => {
   return {
     type: actionTypes.GET_WORLD_POWER_COUNTRIES_EMISSIONS,
     emissionsData: emissionsData
-  };
-};
-
-export const fetchDataFail = () => {
-  return {
-    type: actionTypes.FETCH_DATA_FAIL
   };
 };
 
@@ -62,7 +57,7 @@ export const getCountries = year => {
         dispatch(fetchEmissionsData(worldPowerfulCountriesData));
       })
       .catch(error => {
-        dispatch(fetchDataFail());
+        dispatch(globalActions.fetchDataFail(error));
       });
   };
 };

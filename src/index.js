@@ -1,25 +1,24 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-
-import Filter from "./store/reducers/Filter";
+import ReactDOM from "react-dom";
+import { createStore, applyMiddleware, compose, combineReducers } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import { BrowserRouter } from "react-router-dom";
+//import reducers and styles
+import "./index.css";
+import IndividualCountry from "./store/reducers/IndividualCountry";
 import BiggestEmitters from './store/reducers/BiggestEmmiters';
 import IntervalOfYears from './store/reducers/IntervalOfYears';
 import NearMe from './store/reducers/NearMe';
 import WorldPower from './store/reducers/WorldPower';
 
-import { createStore, applyMiddleware, compose, combineReducers } from "redux";
-import { Provider } from "react-redux";
-import thunk from "redux-thunk";
 
-import { BrowserRouter } from "react-router-dom";
-
+import App from "./App";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
-  Filter:Filter,
+  IndividualCountry:IndividualCountry,
   BiggestEmitters:BiggestEmitters,
   IntervalOfYears: IntervalOfYears,
   NearMe:NearMe,

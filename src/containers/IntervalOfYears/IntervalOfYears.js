@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 //components and actions imports
 import styles from "./IntervalOfYears.module.css";
-import * as actions from "../../store/actions/actions";
+import * as globalActions from "../../store/actions/globalActions";
 import * as actionsIntervalOfYears from "../../store/actions/IntervalOfYears";
 import Autosuggest from "react-autosuggest";
 import YearPicker from "../../components/YearPicker/YearPicker";
@@ -201,7 +201,7 @@ const mapStateToProps = state => {
   return {
     populationData: state.IntervalOfYears.populationData,
     emissionsData: state.IntervalOfYears.emissionsData,
-    allCountries: state.Filter.allCountries,
+    allCountries: state.IndividualCountry.allCountries,
     visible: state.IntervalOfYears.visible
   };
 };
@@ -216,8 +216,8 @@ const mapDispatchToProps = dispatch => {
           year2
         )
       ),
-    onGetAllCountries: () => dispatch(actions.getAllCountries()),
-    onResetState: () => dispatch(actions.resetReduxState())
+    onGetAllCountries: () => dispatch(globalActions.getAllCountries()),
+    onResetState: () => dispatch(globalActions.resetReduxState())
   };
 };
 

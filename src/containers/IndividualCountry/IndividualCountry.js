@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Autosuggest from "react-autosuggest";
 //components and actions imports
-import * as actions from "../../store/actions/actions";
+import * as actions from "../../store/actions/IndividualCountry";
+import * as globalActions from '../../store/actions/globalActions';
 import YearPicker from "../../components/YearPicker/YearPicker";
 import SearchButton from "../../components/SearchButton/SearchButton";
 import Result from "../../components/Result/Result";
@@ -141,9 +142,9 @@ class IndividualCountry extends Component {
 
 const mapStateToProps = state => {
   return {
-    currentPopulationData: state.Filter.currentPopulationData,
-    currentEmissionsData: state.Filter.currentEmissionsData,
-    allCountries: state.Filter.allCountries
+    currentPopulationData: state.IndividualCountry.currentPopulationData,
+    currentEmissionsData: state.IndividualCountry.currentEmissionsData,
+    allCountries: state.IndividualCountry.allCountries
   };
 };
 
@@ -151,8 +152,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onGetCountryCode: (country, year) =>
       dispatch(actions.getCountry(country, year)),
-    onGetAllCountries: () => dispatch(actions.getAllCountries()),
-    onResetState: () => dispatch(actions.resetReduxState())
+    onGetAllCountries: () => dispatch(globalActions.getAllCountries()),
+    onResetState: () => dispatch(globalActions.resetReduxState())
   };
 };
 

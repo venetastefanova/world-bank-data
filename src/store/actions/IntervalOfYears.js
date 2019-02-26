@@ -1,4 +1,5 @@
 import * as actionTypes from "./actionTypes";
+import * as globalActions from './globalActions';
 import axios from "axios";
 
 export const fetchPopulationData = populationData => {
@@ -15,11 +16,6 @@ export const fetchEmissionsData = emissionsData => {
   };
 };
 
-export const fetchDataFail = () => {
-  return {
-    type: actionTypes.FETCH_DATA_FAIL
-  };
-};
 
 export const getCountryDataForIntervalYears = (country, year1, year2) => {
   return dispatch => {
@@ -44,7 +40,7 @@ export const getCountryDataForIntervalYears = (country, year1, year2) => {
         dispatch(fetchPopulationData(populationForTheIntervalYears.reverse()));
       })
       .catch(error => {
-        dispatch(fetchDataFail());
+        dispatch(globalActions.fetchDataFail(error));
       });
     //get emissions data for period of time
     axios.get(`https://api.worldbank.org/v2/country/${country}/indicator/EN.ATM.CO2E.KT?format=json&date=${year1}:${year2}`)
@@ -59,7 +55,7 @@ export const getCountryDataForIntervalYears = (country, year1, year2) => {
         dispatch(fetchEmissionsData(emissionsForTheIntervalYears.reverse()));
       })
       .catch(error => {
-        dispatch(fetchDataFail());
+        dispatch(globalActions.fetchDataFail(error));
       });
   };
 };

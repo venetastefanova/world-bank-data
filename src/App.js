@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import "./App.css";
+import { connect } from "react-redux";
 import { Switch, Route, withRouter } from "react-router-dom";
+import "./App.css";
+//containers and actions import
 import IndividualCountry from "./containers/IndividualCountry/IndividualCountry";
 import BiggestEmitters from "./containers/BiggestEmitters/BiggestEmitters";
 import IntervalOfYears from "./containers/IntervalOfYears/IntervalOfYears";
 import NearMe from "./containers/NearMe/NearMe";
 import WorldPower from "./containers/WorldPower/WorldPower";
-
-import { connect } from "react-redux";
-import * as actions from "./store/actions/actions";
+import * as globalActions from "./store/actions/globalActions";
 import Footer from './components/Footer/Footer';
 import Navigation from './components/Navigation/Navigation';
 import Home from './components/Home/Home';
@@ -43,22 +43,20 @@ class App extends Component {
           </Switch>
         </div>
         <Footer/>
-
       </div>: <Spinner/>}
-        
       </div>
     );
   }
 }
 const mapStateToProps = state => {
   return {
-    years: state.Filter.years
+    years: state.IndividualCountry.years
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetAllYears: () => dispatch(actions.getAllYears())
+    onGetAllYears: () => dispatch(globalActions.getAllYears())
   };
 };
 

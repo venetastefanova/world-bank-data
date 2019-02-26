@@ -1,4 +1,5 @@
 import * as actionTypes from "./actionTypes";
+import * as globalActions from './globalActions';
 import axios from "axios";
 
 export const fetchPopulationData = populationData => {
@@ -15,11 +16,7 @@ export const fetchEmissionsData = emissionsData => {
   };
 };
 
-export const fetchDataFail = () => {
-  return {
-    type: actionTypes.FETCH_DATA_FAIL
-  };
-};
+
 export const getCountryInput = (country, year1, year2) => {
   return dispatch => {
     //get country for the interval of years
@@ -67,7 +64,7 @@ export const getCountryInput = (country, year1, year2) => {
             dispatch(fetchPopulationData(allCountries));
           })
           .catch(error => {
-            dispatch(fetchDataFail());
+            dispatch(globalActions.fetchDataFail(error));
           });
         //get the population data for the region in the interval of years
         axios
@@ -97,11 +94,11 @@ export const getCountryInput = (country, year1, year2) => {
             dispatch(fetchEmissionsData(allCountries.reverse()));
           })
           .catch(error => {
-            dispatch(fetchDataFail());
+            dispatch(globalActions.fetchDataFail(error));
           });
       })
       .catch(error => {
-        dispatch(fetchDataFail());
+        dispatch(globalActions.fetchDataFail(error));
       });
   };
 };

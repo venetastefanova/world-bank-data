@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 //components and actions imports
 import styles from "./WorldPower.module.css";
 import * as actionsWorldPower from "../../store/actions/WorldPower";
-import * as actions from "../../store/actions/actions";
+import * as globalActions from "../../store/actions/globalActions";
 import YearPicker from "../../components/YearPicker/YearPicker";
 import SearchButton from "../../components/SearchButton/SearchButton";
 import Graph from "../../components/Graph/Graph";
@@ -96,7 +96,7 @@ class WorldPower extends Component {
 const mapStateToProps = state => {
   return {
     emissionsData: state.WorldPower.emissionsData,
-    allCountries: state.Filter.allCountries,
+    allCountries: state.IndividualCountry.allCountries,
     visible: state.WorldPower.visible
   };
 };
@@ -104,7 +104,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onGetCountries: year => dispatch(actionsWorldPower.getCountries(year)),
-    onResetState: () => dispatch(actions.resetReduxState())
+    onResetState: () => dispatch(globalActions.resetReduxState())
   };
 };
 

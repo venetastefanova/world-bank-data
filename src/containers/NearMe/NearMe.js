@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 //components and actions imports
-import * as actions from "../../store/actions/actions";
+import * as globalActions from "../../store/actions/globalActions";
 import * as actionsNearMe from "../../store/actions/NearMe";
 import Autosuggest from "react-autosuggest";
 import YearPicker from "../../components/YearPicker/YearPicker";
@@ -227,7 +227,7 @@ const mapStateToProps = state => {
   return {
     populationData: state.NearMe.populationData,
     emissionsData: state.NearMe.emissionsData,
-    allCountries: state.Filter.allCountries,
+    allCountries: state.IndividualCountry.allCountries,
     region: state.NearMe.region,
     visible: state.NearMe.visible
   };
@@ -237,8 +237,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onGetCountryInput: (country, year1, year2) =>
       dispatch(actionsNearMe.getCountryInput(country, year1, year2)),
-    onGetAllCountries: () => dispatch(actions.getAllCountries()),
-    onResetState: () => dispatch(actions.resetReduxState())
+    onGetAllCountries: () => dispatch(globalActions.getAllCountries()),
+    onResetState: () => dispatch(globalActions.resetReduxState())
   };
 };
 

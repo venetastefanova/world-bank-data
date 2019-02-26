@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 //components and actions imports
 import * as actionsEmitters from "../../store/actions/BiggestEmitters";
-import * as actions from "../../store/actions/actions";
+import * as globalActions from "../../store/actions/globalActions";
 import styles from "./BiggestEmitters.module.css";
 import SearchButton from "../../components/SearchButton/SearchButton";
 import YearPicker from "../../components/YearPicker/YearPicker";
@@ -145,7 +145,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onGetCountries: year => dispatch(actionsEmitters.getData(year)),
-    onResetState: () => dispatch(actions.resetReduxState())
+    onResetState: () => dispatch(globalActions.resetReduxState())
   };
 };
 
