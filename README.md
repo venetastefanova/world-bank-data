@@ -12,13 +12,5 @@ Currently from the app can be seen:
 ### Tools:
 - `React.js`
 - `CanvasJS` for displaying the filtered data
-  
-### Additional information:
-- The application uses API, so the data is always up to date
-- The application is fully responsive
-_____
-### Developer's notes:
-World bank data API was used straight away. As a result, the data is always up to date and the application doesn't require maintenance. 
-Due to that, only the given data in the provided CSV files has been used in the process of development.
 
 [Check it out here!](https://world-data-bank.herokuapp.com/)

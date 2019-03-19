@@ -27,9 +27,6 @@ class Navigation extends Component {
               alt="navigationMenu"
             />
           </span>
-          <span href="#" className={styles.Logo}>
-            Reaktor
-          </span>
           <ul className={this.state.opened ? styles.Active : styles.MainNav}>
             <li>
               <NavLink to={"/"} exact activeClassName={styles.ActiveButton} className={styles.NavLinks}>
